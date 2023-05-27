@@ -1,6 +1,6 @@
 import { getEnvConfig, __prod__ } from "../config";
 import { request } from "gaxios";
-import { userService } from ".";
+import { employeeService } from ".";
 
 const scope = "https://www.googleapis.com/auth/userinfo.email";
 
@@ -49,5 +49,5 @@ export const getUserFromCode = async (code: string, redirect_uri: string) => {
 
     if (!data.email) throw x;
 
-    return await userService.getUserByEmail(data.email);
+    return await employeeService.getEmployeeByEmail(data.email);
 };

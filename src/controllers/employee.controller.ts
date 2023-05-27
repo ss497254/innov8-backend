@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import httpStatus from "../constants/http-status";
 import ApiError from "../lib/api-error";
-import { userService } from "../services";
+import { employeeService } from "../services";
 import { z } from "zod";
 import { createAccessToken, sendAccessToken } from "../utils/UseAccessToken";
 import { userValidation } from "../validations";
 
-export const userLogin = async (
+export const employeeLogin = async (
     data: z.infer<typeof userValidation.userLogin>,
     res: Response
 ) => {
     const { email, password } = data.body;
 
     try {
-        const user = await userService.getUserByEmailAndPassword(
+        const user = await employeeService.getEmployeeByEmailAndPassword(
             email,
             password
         );
@@ -34,12 +34,12 @@ export const userLogin = async (
     }
 };
 
-export const userRegister = async (
+export const employeeRegister = async (
     req: z.infer<typeof userValidation.userRegister>,
     res: Response
 ) => {
     try {
-        const data = await userService.addUser(req.body);
+        const data = await employeeService.addEmployee(req.body);
 
         res.status(httpStatus.CREATED).send({
             success: true,
@@ -55,6 +55,6 @@ export const userRegister = async (
     }
 };
 
-export const userLoggedIn = async (_req: Request, res: Response) => {
+export const employeeLoggedIn = async (_req: Request, res: Response) => {
     res.json({ success: true, message: "You are logged in" });
 };

@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { getEnvConfig } from "../config";
+import "../firebase";
+import adminRoute from "./admin.route";
 import appRoute from "./app.route";
 import developmentRoute from "./development.route";
-import userRoute from "./user.route";
-import "../firebase";
+import employeeRoute from "./employee.route";
+import judgeRoute from "./judge.route";
 
-const API_ROUTES = [appRoute, userRoute];
+const API_ROUTES = [appRoute, employeeRoute, adminRoute, judgeRoute];
 const DEV_ROUTES = [developmentRoute];
 
 module.exports = (router: Router) => {
