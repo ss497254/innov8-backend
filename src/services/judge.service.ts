@@ -9,6 +9,8 @@ const TableName = "judges";
 export const getJudgeByEmail = async (email: string) => {
     const result: any = await getItem(TableName, email);
 
+    if (!result) throw new Error("User not found!");
+
     return result as UserType;
 };
 
