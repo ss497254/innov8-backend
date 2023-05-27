@@ -18,6 +18,8 @@ export const employeeLogin = async (
             password
         );
 
+        user.role = "employee";
+
         const token = createAccessToken({ id: user.id });
 
         sendAccessToken(res, token);
@@ -55,6 +57,14 @@ export const employeeRegister = async (
     }
 };
 
-export const employeeLoggedIn = async (_req: Request, res: Response) => {
-    res.json({ success: true, message: "You are logged in" });
+export const getEmployee = async (req: Request, res: Response) => {
+    const id = req.session.id;
+
+    try {
+        const user = await employeeService.getEmployee(id);
+
+        res.json({ success: true, data: user });
+    } catch (e) {
+        new ApiError(httpStatus.BAD_REQUEST, "user not found", e).parse(res);
+    }
 };

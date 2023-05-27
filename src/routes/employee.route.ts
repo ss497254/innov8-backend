@@ -6,9 +6,7 @@ import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router
-    .route("/employee/logged-in")
-    .get(auth, employeeController.employeeLoggedIn);
+router.route("/employee/me").get(auth, employeeController.getEmployee);
 
 router
     .route("/employee/login")

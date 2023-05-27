@@ -1,13 +1,21 @@
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
-import { addItemWithId, getItem } from "../firebase";
+import { addItemWithId, getItem, getItemById } from "../firebase";
 import { UserType } from "../types/UserType";
 import { removeKey } from "../utils/lodash";
 
 const TableName = "admins";
 
+export const getAdmin = async (id: string) => {
+    const result: any = (await getItem(TableName, "id", "==", id))[0];
+
+    if (!result) throw new Error("User not found!");
+
+    return result as UserType;
+};
+
 export const getAdminByEmail = async (email: string) => {
-    const result: any = await getItem(TableName, email);
+    const result: any = await getItemById(TableName, email);
 
     if (!result) throw new Error("User not found!");
 

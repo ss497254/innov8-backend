@@ -6,7 +6,7 @@ import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.route("/judge/logged-in").get(auth, judgeController.judgeLoggedIn);
+router.route("/judge/me").get(auth, judgeController.getJudge);
 
 router
     .route("/judge/login")

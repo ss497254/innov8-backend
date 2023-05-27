@@ -1,4 +1,8 @@
-import { getFirestore } from "firebase-admin/firestore";
+import {
+    FieldPath,
+    getFirestore,
+    WhereFilterOp,
+} from "firebase-admin/firestore";
 import { FirebaseInstance } from "./setup";
 
 const firestore = getFirestore(FirebaseInstance);
@@ -30,7 +34,21 @@ export const getItems = async (
     }));
 };
 
-export const getItem = async (collectionName: string, docId: string) => {
+export const getItem = async (
+    collectionName: string,
+    fieldPath: string | FieldPath,
+    opStr: WhereFilterOp,
+    value: any
+) => {
+    return (
+        await firestore
+            .collection(collectionName)
+            .where(fieldPath, opStr, value)
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+export const getItemById = async (collectionName: string, docId: string) => {
     return (await firestore.collection(collectionName).doc(docId).get()).data();
 };
 

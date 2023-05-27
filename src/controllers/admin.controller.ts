@@ -18,6 +18,8 @@ export const adminLogin = async (
             password
         );
 
+        user.role = "admin";
+
         const token = createAccessToken({ id: user.id });
 
         sendAccessToken(res, token);
@@ -55,6 +57,14 @@ export const adminRegister = async (
     }
 };
 
-export const adminLoggedIn = async (_req: Request, res: Response) => {
-    res.json({ success: true, message: "You are logged in" });
+export const getAdmin = async (req: Request, res: Response) => {
+    const id = req.session.id;
+
+    try {
+        const user = await adminService.getAdmin(id);
+
+        res.json({ success: true, data: user });
+    } catch (e) {
+        new ApiError(httpStatus.BAD_REQUEST, "user not found", e).parse(res);
+    }
 };
