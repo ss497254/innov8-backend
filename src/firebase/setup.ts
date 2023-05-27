@@ -8,7 +8,9 @@ export let FirebaseInstance: App;
 const serviceAccount: ServiceAccount = {
     clientEmail: getEnvConfig("FIREBASE_CLIENT_EMAIL"),
     projectId: getEnvConfig("FIREBASE_PROJECT_ID"),
-    privateKey: getEnvConfig("FIREBASE_PRIVATE_KEY"),
+    privateKey: getEnvConfig("FIREBASE_PRIVATE_KEY")
+        .split(String.raw`\n`)
+        .join("\n"),
 };
 
 export const InitializeFirebase = async () => {
