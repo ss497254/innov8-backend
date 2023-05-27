@@ -7,7 +7,7 @@ import { createAccessToken, sendAccessToken } from "../utils/UseAccessToken";
 import { userValidation } from "../validations";
 
 export const userLogin = async (
-    data: z.infer<typeof userValidation.userLoginAndRegister>,
+    data: z.infer<typeof userValidation.userLogin>,
     res: Response
 ) => {
     const { email, password } = data.body;
@@ -34,11 +34,12 @@ export const userLogin = async (
     }
 };
 
-export const userRegister = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-
+export const userRegister = async (
+    req: z.infer<typeof userValidation.userRegister>,
+    res: Response
+) => {
     try {
-        const data = await userService.addUser(email, password);
+        const data = await userService.addUser(req.body);
 
         res.status(httpStatus.CREATED).send({
             success: true,

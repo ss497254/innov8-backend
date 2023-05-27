@@ -10,17 +10,10 @@ router.route("/logged-in").get(auth, userController.userLoggedIn);
 
 router
     .route("/login")
-    .post(
-        validate(userValidation.userLoginAndRegister, userController.userLogin)
-    );
+    .post(validate(userValidation.userLogin, userController.userLogin));
 
 router
     .route("/register/")
-    .post(
-        validate(
-            userValidation.userLoginAndRegister,
-            userController.userRegister
-        )
-    );
+    .post(validate(userValidation.userRegister, userController.userRegister));
 
 export default router;
