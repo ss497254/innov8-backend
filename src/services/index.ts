@@ -1,4 +1,4 @@
-export * as appService from "./app.service";
+export * as projectService from "./project.service";
 export * as employeeService from "./employee.service";
 export * as adminService from "./admin.service";
 export * as judgeService from "./judge.service";

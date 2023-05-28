@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { getEnvConfig } from "../config";
 import "../firebase";
-import adminRoute from "./admin.route";
-import appRoute from "./app.route";
-import developmentRoute from "./development.route";
-import employeeRoute from "./employee.route";
-import judgeRoute from "./judge.route";
+import admin from "./admin.route";
+import development from "./development.route";
+import employee from "./employee.route";
+import judge from "./judge.route";
+import project from "./project.route";
 
-const API_ROUTES = [appRoute, employeeRoute, adminRoute, judgeRoute];
-const DEV_ROUTES = [developmentRoute];
+const API_ROUTES = [project, employee, admin, judge];
+const DEV_ROUTES = [development];
 
 module.exports = (router: Router) => {
     API_ROUTES.forEach((route) => {
