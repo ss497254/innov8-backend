@@ -18,7 +18,6 @@ export const employeeLogin = async (
             password
         );
 
-        user.role = "employee";
         const token = createAccessToken(user);
 
         sendAccessToken(res, token);

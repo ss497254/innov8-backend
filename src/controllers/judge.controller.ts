@@ -18,7 +18,6 @@ export const judgeLogin = async (
             password
         );
 
-        user.role = "judge";
         const token = createAccessToken(user);
 
         sendAccessToken(res, token);

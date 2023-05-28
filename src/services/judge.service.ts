@@ -34,6 +34,7 @@ export const getJudgeByEmailAndPassword = async (
 };
 
 export const addJudge = async (user: Omit<UserType, "id">) => {
+    user.role = "judge";
     user.password = await bcrypt.hash(user.password, 4);
 
     return await addItemWithId(TableName, user.email, {

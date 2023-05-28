@@ -2,8 +2,8 @@ import { z } from "zod";
 import { addItem, getCollectionData } from "../firebase";
 import { projectValidation } from "../validations";
 
-const DraftsTableName = "drafts-projects";
-const ScreeningTableName = "screening-projects";
+const DraftsTableName = "projects-drafts";
+const ScreeningTableName = "projects-screening";
 
 export const getProjectsFromDraft = async () => {
     return await getCollectionData(DraftsTableName);

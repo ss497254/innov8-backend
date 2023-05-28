@@ -34,6 +34,7 @@ export const getAdminByEmailAndPassword = async (
 };
 
 export const addAdmin = async (user: Omit<UserType, "id">) => {
+    user.role = "admin";
     user.password = await bcrypt.hash(user.password, 4);
 
     return await addItemWithId(TableName, user.email, {

@@ -34,6 +34,7 @@ export const getEmployeeByEmailAndPassword = async (
 };
 
 export const addEmployee = async (user: Omit<UserType, "id">) => {
+    user.role = "employee";
     user.password = await bcrypt.hash(user.password, 4);
 
     return await addItemWithId(TableName, user.email, {
