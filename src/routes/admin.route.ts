@@ -2,11 +2,11 @@ import { adminController } from "../controllers";
 import express from "express";
 import validate from "../middlewares/validate";
 import { userValidation } from "../validations";
-import { auth } from "../middlewares/auth";
+import { authProvider } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.route("/admin/me").get(auth, adminController.getAdmin);
+router.route("/admin/me").get(authProvider("admin"), adminController.getAdmin);
 
 router
     .route("/admin/login")

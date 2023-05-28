@@ -31,7 +31,7 @@ export const InitRequest = async (
             algorithms: ["HS256"],
         }) as any;
 
-        req.session = { id: payload.id };
+        req.session = payload;
     } catch (err) {
         removeAccessToken(res);
     }

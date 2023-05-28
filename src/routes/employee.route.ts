@@ -2,11 +2,13 @@ import { employeeController } from "../controllers";
 import express from "express";
 import validate from "../middlewares/validate";
 import { userValidation } from "../validations";
-import { auth } from "../middlewares/auth";
+import { authProvider } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.route("/employee/me").get(auth, employeeController.getEmployee);
+router
+    .route("/employee/me")
+    .get(authProvider("employee"), employeeController.getEmployee);
 
 router
     .route("/employee/login")

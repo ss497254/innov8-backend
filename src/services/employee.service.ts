@@ -28,7 +28,7 @@ export const getEmployeeByEmailAndPassword = async (
 ) => {
     const user = await getEmployeeByEmail(email);
     if (await bcrypt.compare(password, user.password))
-        return removeKey("password", user);
+        return removeKey<UserType>("password", user);
 
     throw new Error("password not match");
 };

@@ -19,8 +19,7 @@ export const judgeLogin = async (
         );
 
         user.role = "judge";
-
-        const token = createAccessToken({ id: user.id });
+        const token = createAccessToken(user);
 
         sendAccessToken(res, token);
 

@@ -19,8 +19,7 @@ export const adminLogin = async (
         );
 
         user.role = "admin";
-
-        const token = createAccessToken({ id: user.id });
+        const token = createAccessToken(user);
 
         sendAccessToken(res, token);
 

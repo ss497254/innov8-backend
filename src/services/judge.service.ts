@@ -28,7 +28,7 @@ export const getJudgeByEmailAndPassword = async (
 ) => {
     const user = await getJudgeByEmail(email);
     if (await bcrypt.compare(password, user.password))
-        return removeKey("password", user);
+        return removeKey<UserType>("password", user);
 
     throw new Error("password not match");
 };
