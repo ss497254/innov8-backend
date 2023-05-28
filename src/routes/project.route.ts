@@ -7,19 +7,49 @@ import { projectValidation } from "../validations";
 const router = express.Router();
 
 router
-    .route("/admin/get-projects")
+    .route("/admin/projects")
     .get(authProvider("admin"), projectController.getProjectsFromScreening);
 
 router
-    .route("/employee/get-projects/drafts")
+    .route("/admin/projects/:projectId/add-judge")
+    .post(
+        authProvider("admin"),
+        validate(
+            projectValidation.addJudgeToProject,
+            projectController.addJudgeToProject
+        )
+    );
+
+router
+    .route("/admin/projects/:projectId")
+    .get(
+        authProvider("admin"),
+        validate(
+            projectValidation.getProjectsById,
+            projectController.getProjectsById
+        )
+    );
+
+router
+    .route("/judge/projects/:projectId")
+    .get(
+        authProvider("judge"),
+        validate(
+            projectValidation.getProjectsById,
+            projectController.getProjectsById
+        )
+    );
+
+router
+    .route("/employee/projects/drafts")
     .get(authProvider("employee"), projectController.getProjectsFromDraft);
 
 router
-    .route("/employee/get-projects/screening")
+    .route("/employee/projects/screening")
     .get(authProvider("employee"), projectController.getProjectsFromScreening);
 
 router
-    .route("/employee/get-project/:projectId")
+    .route("/employee/projects/:projectId")
     .get(
         authProvider("employee"),
         validate(
@@ -27,7 +57,8 @@ router
             projectController.getProjectsById
         )
     )
-    .put(authProvider("employee"));
+    .put(authProvider("employee"))
+    .delete(authProvider("employee"));
 
 router
     .route("/employee/save-project")

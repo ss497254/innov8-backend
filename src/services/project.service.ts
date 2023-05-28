@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { addItem, getCollectionData } from "../firebase";
+import { addItem, getCollectionData, getItemById } from "../firebase";
 import { projectValidation } from "../validations";
 
 const DraftsTableName = "projects-drafts";
@@ -14,7 +14,15 @@ export const getProjectsFromScreening = async () => {
 };
 
 export const getProjectsById = async (projectId: string) => {
-    return await getCollectionData(projectId);
+    return await getItemById(ScreeningTableName, projectId);
+};
+
+export const addJudgeToProject = async (
+    projectId: string,
+    judgeEmail: string
+) => {
+    judgeEmail;
+    return await getItemById(ScreeningTableName, projectId);
 };
 
 export const saveProjectData = async (

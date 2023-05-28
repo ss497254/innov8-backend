@@ -50,6 +50,25 @@ export const getProjectsById = async (
     }
 };
 
+export const addJudgeToProject = async (
+    req: z.infer<typeof projectValidation.addJudgeToProject>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.addJudgeToProject(
+            req.params.projectId,
+            req.body.email
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to add judge to project",
+            e
+        ).parse(res);
+    }
+};
+
 export const saveProjectData = async (
     req: z.infer<typeof projectValidation.saveProjectData>,
     res: Response
