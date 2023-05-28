@@ -3,8 +3,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { getEnvConfig } from "./config";
-import { origin } from "./constants/allowed-cors-origin";
-import { InitializeFirebase } from "./firebase/setup";
+import { CorsOrigin } from "./constants/allowed-cors-origin";
+import { InitializeFirebase, TestFirebase } from "./firebase/setup";
 import { ErrorHandler, InitRequest } from "./middlewares";
 
 const app = express();
@@ -13,13 +13,14 @@ const port = getEnvConfig("PORT");
 
 async function bootstrap() {
     await InitializeFirebase();
+    TestFirebase();
 
     app.set("x-powered-by", false);
     app.set("trust proxy", 1);
     app.use(cookieParser());
     app.use(
         cors({
-            origin,
+            origin: CorsOrigin,
             credentials: true,
         })
     );

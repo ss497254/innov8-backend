@@ -23,8 +23,10 @@ export const InitializeFirebase = async () => {
     }
 
     FirebaseInstance = apps[0];
+};
 
+export const TestFirebase = async () => {
     await getFirestore(FirebaseInstance).listCollections();
 
-    console.log("Firebase setup successful.");
+    console.log("Firebase connected successfullly.");
 };

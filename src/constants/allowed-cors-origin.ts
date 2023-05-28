@@ -1,4 +1,4 @@
-export const origin = [
+export const CorsOrigin = [
     "http://localhost:3000",
     "http://localhost:3001",
     "http://localhost:3002",
