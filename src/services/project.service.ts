@@ -1,11 +1,28 @@
+import { z } from "zod";
 import { addItem, getCollectionData } from "../firebase";
+import { projectValidation } from "../validations";
 
-const TableName = "projects";
+const DraftsTableName = "drafts-projects";
+const ScreeningTableName = "screening-projects";
 
-export const getProjectData = async (appName: string) => {
-    return await getCollectionData(appName);
+export const getProjectsFromDraft = async () => {
+    return await getCollectionData(DraftsTableName);
 };
 
-export const saveProjectData = async (data: any) => {
-    return await addItem(TableName, data);
+export const getProjectsFromScreening = async () => {
+    return await getCollectionData(ScreeningTableName);
+};
+
+export const getProjectsById = async (projectId: string) => {
+    return await getCollectionData(projectId);
+};
+
+export const saveProjectData = async (
+    type: z.infer<typeof projectValidation.saveProjectData>["body"]["type"],
+    data: z.infer<typeof projectValidation.saveProjectData>["body"]["data"]
+) => {
+    if (type === "draft") return await addItem(DraftsTableName, data);
+    else if (type === "submit") return await addItem(ScreeningTableName, data);
+
+    throw new Error("Invalid form type");
 };

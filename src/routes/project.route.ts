@@ -7,14 +7,27 @@ import { projectValidation } from "../validations";
 const router = express.Router();
 
 router
-    .route("/employee/get-project")
+    .route("/admin/get-projects")
+    .get(authProvider("admin"), projectController.getProjectsFromScreening);
+
+router
+    .route("/employee/get-projects/drafts")
+    .get(authProvider("employee"), projectController.getProjectsFromDraft);
+
+router
+    .route("/employee/get-projects/screening")
+    .get(authProvider("employee"), projectController.getProjectsFromScreening);
+
+router
+    .route("/employee/get-project/:projectId")
     .get(
         authProvider("employee"),
         validate(
-            projectValidation.getProjectData,
-            projectController.getProjectData
+            projectValidation.getProjectsById,
+            projectController.getProjectsById
         )
-    );
+    )
+    .put(authProvider("employee"));
 
 router
     .route("/employee/save-project")

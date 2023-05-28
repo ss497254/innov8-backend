@@ -9,8 +9,13 @@ export const getProjectData = z.object({
     params: ProjectIdValidation,
 });
 
+export const getProjectsById = z.object({
+    params: ProjectIdValidation,
+});
+
 export const saveProjectData = z.object({
     body: z.object({
+        type: z.enum(["draft", "submit"]),
         data: z.object({
             name: z.string(),
             elevatorPitch: z.string(),
