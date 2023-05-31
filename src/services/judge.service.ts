@@ -7,26 +7,31 @@ import { removeKey } from "../utils/lodash";
 const TableName = "judges";
 
 export const getJudge = async (id: string) => {
-    const result: any = (await getItem(TableName, "id", "==", id))[0];
+    const user: any = (await getItem(TableName, "id", "==", id))[0];
 
-    if (!result) throw new Error("User not found!");
+    if (!user) throw new Error("User not found!");
 
-    return result as UserType;
+    return removeKey<UserType>("password", user);
 };
 
-export const getJudgeByEmail = async (email: string) => {
-    const result: any = await getItemById(TableName, email);
+export const getJudgeByEmail = async (
+    email: string,
+    withPassword = false
+): Promise<UserType> => {
+    const user: any = await getItemById(TableName, email);
 
-    if (!result) throw new Error("User not found!");
+    if (!user) throw new Error("User not found!");
 
-    return result as UserType;
+    if (withPassword) return user;
+
+    return removeKey("password", user);
 };
 
 export const getJudgeByEmailAndPassword = async (
     email: string,
     password: string
 ) => {
-    const user = await getJudgeByEmail(email);
+    const user = await getJudgeByEmail(email, true);
     if (await bcrypt.compare(password, user.password))
         return removeKey<UserType>("password", user);
 

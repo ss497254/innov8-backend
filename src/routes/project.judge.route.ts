@@ -22,7 +22,7 @@ router
 
 router
     .route("/judge/projects/:projectId/add-review")
-    .get(
+    .post(
         authProvider("judge"),
         validate(
             projectValidation.addReviewToProject,
