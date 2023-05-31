@@ -5,9 +5,18 @@ import admin from "./admin.route";
 import development from "./development.route";
 import employee from "./employee.route";
 import judge from "./judge.route";
-import project from "./project.route";
+import projectAdmin from "./project.admin.route";
+import projectEmployee from "./project.employee.route";
+import projectJudge from "./project.judge.route";
 
-const API_ROUTES = [project, employee, admin, judge];
+const API_ROUTES = [
+    admin,
+    employee,
+    judge,
+    projectAdmin,
+    projectEmployee,
+    projectJudge,
+];
 const DEV_ROUTES = [development];
 
 module.exports = (router: Router) => {
