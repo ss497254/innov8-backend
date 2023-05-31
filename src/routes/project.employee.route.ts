@@ -15,15 +15,12 @@ router
 
 router
     .route("/employee/projects")
-    .get(
-        authProvider("employee"),
-        projectEmployeeController.getProjectsFromScreening
-    )
+    .get(authProvider("employee"), projectEmployeeController.getProjects)
     .post(
         authProvider("employee"),
         validate(
-            projectValidation.saveProjectData,
-            projectEmployeeController.saveProjectData
+            projectValidation.saveProject,
+            projectEmployeeController.saveProject
         )
     );
 

@@ -12,18 +12,15 @@ export const getProjectsFromDraft = async (_req: Request, res: Response) => {
     } catch (e) {
         new ApiError(
             httpStatus.BAD_REQUEST,
-            "unable to get projects data",
+            "unable to get draft project",
             e
         ).parse(res);
     }
 };
 
-export const getProjectsFromScreening = async (
-    _req: Request,
-    res: Response
-) => {
+export const getProjects = async (_req: Request, res: Response) => {
     try {
-        const data = await projectService.getProjectsFromScreening();
+        const data = await projectService.getProjects();
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(
@@ -50,33 +47,14 @@ export const getProjectsById = async (
     }
 };
 
-export const addJudgeToProject = async (
-    req: z.infer<typeof projectValidation.addJudgeToProject>,
-    res: Response
-) => {
-    try {
-        const data = await projectService.addJudgeToProject(
-            req.params.projectId,
-            req.body.email
-        );
-        res.send({ success: true, data });
-    } catch (e) {
-        new ApiError(
-            httpStatus.BAD_REQUEST,
-            "unable to add judge to project",
-            e
-        ).parse(res);
-    }
-};
-
-export const saveProjectData = async (
-    req: z.infer<typeof projectValidation.saveProjectData>,
+export const saveProject = async (
+    req: z.infer<typeof projectValidation.saveProject>,
     res: Response
 ) => {
     const { type, data } = req.body;
 
     try {
-        const { id } = await projectService.saveProjectData(type, data);
+        const { id } = await projectService.saveProject(type, data);
         res.send({ success: true, data: { id } });
     } catch (e) {
         new ApiError(

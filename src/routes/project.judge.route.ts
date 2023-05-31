@@ -20,4 +20,14 @@ router
         )
     );
 
+router
+    .route("/judge/projects/:projectId/add-review")
+    .get(
+        authProvider("judge"),
+        validate(
+            projectValidation.addReviewToProject,
+            projectJudgeController.addReviewToProject
+        )
+    );
+
 export default router;

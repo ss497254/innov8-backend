@@ -7,7 +7,7 @@ import { projectValidation } from "../validations";
 
 export const getProjects = async (_req: Request, res: Response) => {
     try {
-        const data = await projectService.getProjectsFromScreening();
+        const data = await projectService.getProjectsForJudge();
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(
@@ -24,6 +24,25 @@ export const getProjectsById = async (
 ) => {
     try {
         const data = await projectService.getProjectsById(req.params.projectId);
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get project data",
+            e
+        ).parse(res);
+    }
+};
+
+export const addReviewToProject = async (
+    req: z.infer<typeof projectValidation.addReviewToProject>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.addReviewToProject(
+            req.params.projectId,
+            req.body
+        );
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(

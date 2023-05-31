@@ -22,6 +22,7 @@ export const getCollectionData = async (collectionName: string) => {
     );
 };
 
+// Item operations
 export const getItems = async (
     collectionName: string,
     filter: FirebaseFirestore.Filter
@@ -64,10 +65,14 @@ export const addItem = async (collectionName: string, data: any) => {
     return await firestore.collection(collectionName).add(data);
 };
 
-export const updateItem = () => {
-    // return firestore.send(());
+export const updateItem = async (
+    collectionName: string,
+    id: string,
+    data: any
+) => {
+    return await firestore.collection(collectionName).doc(id).update(data);
 };
 
-export const deleteItem = () => {
-    // return firestore.send(());
+export const deleteItem = async (collectionName: string, id: string) => {
+    return await firestore.collection(collectionName).doc(id).delete();
 };

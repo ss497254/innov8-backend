@@ -7,7 +7,7 @@ import { projectValidation } from "../validations";
 
 export const getProjects = async (_req: Request, res: Response) => {
     try {
-        const data = await projectService.getProjectsFromScreening();
+        const data = await projectService.getProjectsForAdmin();
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(
