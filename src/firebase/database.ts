@@ -17,9 +17,7 @@ export const deleteCollection = (collectionName: string) => {
 };
 
 export const getCollectionData = async (collectionName: string) => {
-    return (await firestore.collection(collectionName).get()).docs.map(
-        (doc) => ({ ...doc.data(), id: doc.id })
-    );
+    return await firestore.collection(collectionName);
 };
 
 // Item operations

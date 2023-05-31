@@ -11,7 +11,11 @@ const DraftsTableName = "projects-drafts";
 const ScreeningTableName = "projects-screening";
 
 export const getProjects = async () => {
-    return await getCollectionData(ScreeningTableName);
+    return (
+        await (await getCollectionData(ScreeningTableName))
+            .select("name", "elevatorPitch")
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const getProjectsById = async (projectId: string) => {
@@ -20,20 +24,27 @@ export const getProjectsById = async (projectId: string) => {
 
 // admin
 export const getProjectsForAdmin = async () => {
-    return await getCollectionData(ScreeningTableName);
+    return (
+        await (await getCollectionData(ScreeningTableName))
+            .select("name", "elevatorPitch")
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const addJudgeToProject = async (
     projectId: string,
     judgeEmail: string
 ) => {
-    judgeEmail;
-    return await getItemById(ScreeningTableName, projectId);
+    return await updateItem(ScreeningTableName, projectId, { judgeEmail });
 };
 
 // judge
 export const getProjectsForJudge = async () => {
-    return await getCollectionData(ScreeningTableName);
+    return (
+        await (await getCollectionData(ScreeningTableName))
+            .select("name", "elevatorPitch")
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const addReviewToProject = async (projectId: string, data: any) => {
