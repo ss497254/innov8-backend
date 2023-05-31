@@ -19,7 +19,10 @@ export const getProjects = async () => {
 };
 
 export const getProjectsById = async (projectId: string) => {
-    return await getItemById(ScreeningTableName, projectId);
+    const project = await getItemById(ScreeningTableName, projectId);
+    if (!project) throw new Error("Project not found");
+
+    return project;
 };
 
 // admin
@@ -50,7 +53,11 @@ export const addReviewToProject = async (projectId: string, data: any) => {
 };
 
 export const getProjectsFromDraft = async () => {
-    return await getCollectionData(DraftsTableName);
+    return (
+        await (await getCollectionData(DraftsTableName))
+            .select("name", "elevatorPitch")
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 export const saveProject = async (
@@ -59,6 +66,18 @@ export const saveProject = async (
 ) => {
     if (type === "draft") return await addItem(DraftsTableName, data);
     else if (type === "submit") return await addItem(ScreeningTableName, data);
+
+    throw new Error("Invalid form type");
+};
+
+export const updateProject = async (
+    type: z.infer<typeof projectValidation.saveProject>["body"]["type"],
+    id: string,
+    data: z.infer<typeof projectValidation.saveProject>["body"]["data"]
+) => {
+    if (type === "draft") return await updateItem(DraftsTableName, id, data);
+    else if (type === "submit")
+        return await updateItem(ScreeningTableName, id, data);
 
     throw new Error("Invalid form type");
 };

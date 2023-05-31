@@ -33,7 +33,13 @@ router
             projectEmployeeController.getProjectsById
         )
     )
-    .put(authProvider("employee"))
+    .put(
+        authProvider("employee"),
+        validate(
+            projectValidation.updateProject,
+            projectEmployeeController.updateProject
+        )
+    )
     .delete(authProvider("employee"));
 
 export default router;

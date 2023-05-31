@@ -64,3 +64,26 @@ export const saveProject = async (
         ).parse(res);
     }
 };
+
+export const updateProject = async (
+    req: z.infer<typeof projectValidation.updateProject>,
+    res: Response
+) => {
+    const { projectId } = req.params;
+    const { type, data } = req.body;
+
+    try {
+        const output = await projectService.updateProject(
+            type,
+            projectId,
+            data
+        );
+        res.send({ success: true, data: output });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to update project data",
+            e
+        ).parse(res);
+    }
+};

@@ -33,3 +33,18 @@ export const saveProject = z.object({
         }),
     }),
 });
+
+export const updateProject = z.object({
+    params: ProjectIdValidation,
+    body: z.object({
+        type: z.enum(["draft", "submit"]),
+        data: z.object({
+            name: z.string(),
+            elevatorPitch: z.string(),
+            summary: z.string(),
+            captureValue: z.string(),
+            teamOverview: z.string(),
+            slideLink: z.string(),
+        }),
+    }),
+});
