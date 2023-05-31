@@ -9,7 +9,7 @@ export const getProjectsById = z.object({
 export const addJudgeToProject = z.object({
     params: ProjectIdValidation,
     body: z.object({
-        email: z.string(),
+        judgeId: z.string(),
     }),
 });
 

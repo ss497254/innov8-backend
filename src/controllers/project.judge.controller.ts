@@ -5,9 +5,11 @@ import ApiError from "../lib/api-error";
 import { projectService } from "../services";
 import { projectValidation } from "../validations";
 
-export const getProjects = async (_req: Request, res: Response) => {
+export const getProjects = async (req: Request, res: Response) => {
+    const { id } = req.session;
+
     try {
-        const data = await projectService.getProjectsForJudge();
+        const data = await projectService.getProjectsForJudge(id);
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(

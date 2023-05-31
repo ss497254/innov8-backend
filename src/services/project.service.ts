@@ -31,17 +31,15 @@ export const getProjectsForAdmin = async () => {
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const addJudgeToProject = async (
-    projectId: string,
-    judgeEmail: string
-) => {
-    return await updateItem(ScreeningTableName, projectId, { judgeEmail });
+export const addJudgeToProject = async (projectId: string, judgeId: string) => {
+    return await updateItem(ScreeningTableName, projectId, { judgeId });
 };
 
 // judge
-export const getProjectsForJudge = async () => {
+export const getProjectsForJudge = async (judgeId: string) => {
     return (
         await (await getCollectionData(ScreeningTableName))
+            .where("judgeId", "==", judgeId)
             .select("name", "elevatorPitch")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));

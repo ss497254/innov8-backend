@@ -41,7 +41,7 @@ export const addJudgeToProject = async (
     try {
         const data = await projectService.addJudgeToProject(
             req.params.projectId,
-            req.body.email
+            req.body.judgeId
         );
         res.send({ success: true, data });
     } catch (e) {
