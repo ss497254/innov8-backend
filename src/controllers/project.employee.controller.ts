@@ -47,6 +47,24 @@ export const getProjectsById = async (
     }
 };
 
+export const getProjectsByIdFromDraft = async (
+    req: z.infer<typeof projectValidation.getProjectsById>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.getProjectsByIdFromDraft(
+            req.params.projectId
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get project data",
+            e
+        ).parse(res);
+    }
+};
+
 export const saveProject = async (
     req: z.infer<typeof projectValidation.saveProject>,
     res: Response

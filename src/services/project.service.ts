@@ -52,12 +52,20 @@ export const addReviewToProject = async (projectId: string, data: any) => {
     return await updateItem(ScreeningTableName, projectId, data);
 };
 
+// employee
 export const getProjectsFromDraft = async () => {
     return (
         await (await getCollectionData(DraftsTableName))
             .select("name", "elevatorPitch")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+export const getProjectsByIdFromDraft = async (projectId: string) => {
+    const project = await getItemById(DraftsTableName, projectId);
+    if (!project) throw new Error("Project not found");
+
+    return project;
 };
 
 export const saveProject = async (

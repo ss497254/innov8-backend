@@ -14,6 +14,16 @@ router
     );
 
 router
+    .route("/employee/projects/drafts/:projectId")
+    .get(
+        authProvider("employee"),
+        validate(
+            projectValidation.getProjectsById,
+            projectEmployeeController.getProjectsByIdFromDraft
+        )
+    );
+
+router
     .route("/employee/projects")
     .get(authProvider("employee"), projectEmployeeController.getProjects)
     .post(
