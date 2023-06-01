@@ -19,3 +19,7 @@ export const userRegister = z.object({
         })
         .strict(),
 });
+
+export const findUser = z.object({
+    query: z.object({ email: z.string().email() }).strict(),
+});

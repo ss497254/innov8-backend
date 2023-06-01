@@ -66,3 +66,18 @@ export const getEmployee = async (req: Request, res: Response) => {
         new ApiError(httpStatus.BAD_REQUEST, "user not found", e).parse(res);
     }
 };
+
+export const getTeamMemberByEmail = async (
+    req: z.infer<typeof userValidation.findUser>,
+    res: Response
+) => {
+    const { email } = req.query;
+
+    try {
+        const user = await employeeService.getEmployeeByEmail(email);
+
+        res.json({ success: true, data: user });
+    } catch (e) {
+        new ApiError(httpStatus.BAD_REQUEST, "user not found", e).parse(res);
+    }
+};

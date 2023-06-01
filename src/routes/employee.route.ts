@@ -11,6 +11,16 @@ router
     .get(authProvider("employee"), employeeController.getEmployee);
 
 router
+    .route("/employee/team-member")
+    .get(
+        authProvider("employee"),
+        validate(
+            userValidation.findUser,
+            employeeController.getTeamMemberByEmail
+        )
+    );
+
+router
     .route("/employee/login")
     .post(validate(userValidation.userLogin, employeeController.employeeLogin));
 
