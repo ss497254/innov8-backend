@@ -10,14 +10,6 @@ import { projectValidation } from "../validations";
 const DraftsTableName = "projects-drafts";
 const ScreeningTableName = "projects-screening";
 
-export const getProjects = async () => {
-    return (
-        await (await getCollectionData(ScreeningTableName))
-            .select("name", "elevatorPitch")
-            .get()
-    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-};
-
 export const getProjectsById = async (projectId: string) => {
     const project = await getItemById(ScreeningTableName, projectId);
     if (!project) throw new Error("Project not found");
@@ -53,6 +45,15 @@ export const addReviewToProject = async (projectId: string, data: any) => {
 };
 
 // employee
+export const getProjectsForEmployee = async (userId: string) => {
+    return (
+        await (await getCollectionData(ScreeningTableName))
+            .select("name", "elevatorPitch")
+            .where("teamMember", "array-contains", userId)
+            .get()
+    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
 export const getProjectsFromDraft = async () => {
     return (
         await (await getCollectionData(DraftsTableName))

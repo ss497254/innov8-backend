@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UserValidation } from "./user.validation";
 
 const ProjectIdValidation = z.object({ projectId: z.string() }).strict();
 
@@ -45,6 +46,7 @@ export const updateProject = z.object({
             captureValue: z.string(),
             teamOverview: z.string(),
             slideLink: z.string(),
+            teamMembers: z.array(UserValidation),
         }),
     }),
 });

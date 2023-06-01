@@ -18,9 +18,11 @@ export const getProjectsFromDraft = async (_req: Request, res: Response) => {
     }
 };
 
-export const getProjects = async (_req: Request, res: Response) => {
+export const getProjects = async (req: Request, res: Response) => {
     try {
-        const data = await projectService.getProjects();
+        const data = await projectService.getProjectsForEmployee(
+            req.session.id
+        );
         res.send({ success: true, data });
     } catch (e) {
         new ApiError(
