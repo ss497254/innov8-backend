@@ -20,19 +20,6 @@ export const getProjects = async (req: Request, res: Response) => {
     }
 };
 
-export const getProjectsFromDraft = async (_req: Request, res: Response) => {
-    try {
-        const data = await projectService.getProjectsFromDraft();
-        res.send({ success: true, data });
-    } catch (e) {
-        new ApiError(
-            httpStatus.BAD_REQUEST,
-            "unable to get draft project",
-            e
-        ).parse(res);
-    }
-};
-
 export const getProjectsById = async (
     req: z.infer<typeof projectValidation.getProjectsById>,
     res: Response
@@ -44,6 +31,19 @@ export const getProjectsById = async (
         new ApiError(
             httpStatus.BAD_REQUEST,
             "unable to get project data",
+            e
+        ).parse(res);
+    }
+};
+
+export const getProjectsFromDraft = async (req: Request, res: Response) => {
+    try {
+        const data = await projectService.getProjectsFromDraft(req.session.id);
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get draft project",
             e
         ).parse(res);
     }

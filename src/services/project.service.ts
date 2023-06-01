@@ -1,6 +1,8 @@
 import { z } from "zod";
 import {
     addItem,
+    addItemWithId,
+    deleteItem,
     getCollectionData,
     getItemById,
     updateItem,
@@ -46,17 +48,18 @@ export const addReviewToProject = async (projectId: string, data: any) => {
 
 // employee
 export const getProjectsForEmployee = async (userId: string) => {
+    userId;
     return (
         await (await getCollectionData(ScreeningTableName))
             .select("name", "elevatorPitch")
-            .where("teamMember", "array-contains", userId)
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const getProjectsFromDraft = async () => {
+export const getProjectsFromDraft = async (id: string) => {
     return (
         await (await getCollectionData(DraftsTableName))
+            .where("leaderId", "==", id)
             .select("name", "elevatorPitch")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -80,13 +83,15 @@ export const saveProject = async (
 };
 
 export const updateProject = async (
-    type: z.infer<typeof projectValidation.saveProject>["body"]["type"],
+    type: z.infer<typeof projectValidation.updateProject>["body"]["type"],
     id: string,
-    data: z.infer<typeof projectValidation.saveProject>["body"]["data"]
+    data: z.infer<typeof projectValidation.updateProject>["body"]["data"]
 ) => {
     if (type === "draft") return await updateItem(DraftsTableName, id, data);
-    else if (type === "submit")
-        return await updateItem(ScreeningTableName, id, data);
+    else if (type === "submit") {
+        await deleteItem(DraftsTableName, id);
+        return await addItemWithId(ScreeningTableName, id, data);
+    }
 
     throw new Error("Invalid form type");
 };
