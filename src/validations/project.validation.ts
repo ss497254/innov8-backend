@@ -31,6 +31,7 @@ export const saveProject = z.object({
             captureValue: z.string(),
             teamOverview: z.string(),
             slideLink: z.string(),
+            teamMembers: z.array(UserValidation),
         }),
     }),
 });

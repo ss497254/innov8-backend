@@ -5,19 +5,6 @@ import ApiError from "../lib/api-error";
 import { projectService } from "../services";
 import { projectValidation } from "../validations";
 
-export const getProjectsFromDraft = async (_req: Request, res: Response) => {
-    try {
-        const data = await projectService.getProjectsFromDraft();
-        res.send({ success: true, data });
-    } catch (e) {
-        new ApiError(
-            httpStatus.BAD_REQUEST,
-            "unable to get draft project",
-            e
-        ).parse(res);
-    }
-};
-
 export const getProjects = async (req: Request, res: Response) => {
     try {
         const data = await projectService.getProjectsForEmployee(
@@ -28,6 +15,19 @@ export const getProjects = async (req: Request, res: Response) => {
         new ApiError(
             httpStatus.BAD_REQUEST,
             "unable to get projects data",
+            e
+        ).parse(res);
+    }
+};
+
+export const getProjectsFromDraft = async (_req: Request, res: Response) => {
+    try {
+        const data = await projectService.getProjectsFromDraft();
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get draft project",
             e
         ).parse(res);
     }
