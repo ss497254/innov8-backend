@@ -3,7 +3,7 @@ import httpStatus from "../constants/http-status";
 import ApiError from "../lib/api-error";
 
 export const authProvider =
-    (role?: "employee" | "admin" | "judge") =>
+    (role?: "employee" | "admin" | "judge" | "coach") =>
     async (req: Request, res: Response, next: NextFunction) => {
         if (
             req.session &&

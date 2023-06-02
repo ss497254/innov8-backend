@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getEnvConfig } from "../config";
 import "../firebase";
 import admin from "./admin.route";
+import coach from "./coach.route";
 import development from "./development.route";
 import employee from "./employee.route";
 import judge from "./judge.route";
@@ -11,6 +12,7 @@ import projectJudge from "./project.judge.route";
 
 const API_ROUTES = [
     admin,
+    coach,
     employee,
     judge,
     projectAdmin,
