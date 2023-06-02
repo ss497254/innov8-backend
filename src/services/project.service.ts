@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
-    ADMIN_REVIEW,
-    COACH_ASSIGN,
+    JUDGE_ASSIGN,
     COACH_REVIEW,
     JUDGE_REVIEW,
     RATING_COMPLETED,
@@ -132,7 +131,7 @@ export const saveProject = async (
     if (type === "draft") return await addItem(DraftsTableName, data);
     else if (type === "submit") {
         //@ts-ignore
-        data.status = ADMIN_REVIEW;
+        data.status = JUDGE_ASSIGN;
         return await addItem(ScreeningTableName, data);
     }
 
@@ -148,7 +147,7 @@ export const updateProject = async (
     else if (type === "submit") {
         await deleteItem(DraftsTableName, id);
         //@ts-ignore
-        data.status = ADMIN_REVIEW;
+        data.status = JUDGE_ASSIGN;
         return await addItemWithId(ScreeningTableName, id, data);
     }
 
