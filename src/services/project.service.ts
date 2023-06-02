@@ -1,6 +1,8 @@
 import { z } from "zod";
 import {
     ADMIN_REVIEW,
+    COACH_ASSIGN,
+    COACH_REVIEW,
     JUDGE_REVIEW,
     RATING_COMPLETED,
 } from "../constants/project-status";
@@ -44,6 +46,16 @@ export const addJudgeToProject = async (
     return await updateItem(ScreeningTableName, projectId, {
         judge,
         status: JUDGE_REVIEW,
+    });
+};
+
+export const addCoachToProject = async (
+    projectId: string,
+    coach: z.infer<typeof projectValidation.addCoachToProject>["body"]["coach"]
+) => {
+    return await updateItem(ScreeningTableName, projectId, {
+        coach,
+        status: COACH_REVIEW,
     });
 };
 

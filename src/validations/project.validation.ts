@@ -14,6 +14,13 @@ export const addJudgeToProject = z.object({
     }),
 });
 
+export const addCoachToProject = z.object({
+    params: ProjectIdValidation,
+    body: z.object({
+        coach: UserValidation,
+    }),
+});
+
 export const addReviewToProject = z.object({
     params: ProjectIdValidation,
     body: z.object({

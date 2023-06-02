@@ -52,3 +52,22 @@ export const addJudgeToProject = async (
         ).parse(res);
     }
 };
+
+export const addCoachToProject = async (
+    req: z.infer<typeof projectValidation.addCoachToProject>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.addCoachToProject(
+            req.params.projectId,
+            req.body.coach
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to add coach to project",
+            e
+        ).parse(res);
+    }
+};

@@ -30,4 +30,14 @@ router
         )
     );
 
+router
+    .route("/admin/projects/:projectId/add-coach")
+    .post(
+        authProvider("admin"),
+        validate(
+            projectValidation.addCoachToProject,
+            projectAdminController.addCoachToProject
+        )
+    );
+
 export default router;
