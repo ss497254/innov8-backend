@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { JUDGE_REVIEW, RATING_COMPLETED } from "../constants/project-status";
 import {
     addItem,
     addItemWithId,
@@ -7,7 +8,6 @@ import {
     getItemById,
     updateItem,
 } from "../firebase";
-import { UserType } from "../types/UserType";
 import { projectValidation } from "../validations";
 
 const DraftsTableName = "projects-drafts";
@@ -20,11 +20,15 @@ export const getProjectsById = async (projectId: string) => {
     return project;
 };
 
-// admin
+/* 
+
+ADMIN PROJECT SERVICES
+
+ */
 export const getProjectsForAdmin = async () => {
     return (
         await (await getCollectionData(ScreeningTableName))
-            .select("name", "elevatorPitch", "teamMembers")
+            .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
@@ -33,15 +37,22 @@ export const addJudgeToProject = async (
     projectId: string,
     judge: z.infer<typeof projectValidation.addJudgeToProject>["body"]["judge"]
 ) => {
-    return await updateItem(ScreeningTableName, projectId, { judge });
+    return await updateItem(ScreeningTableName, projectId, {
+        judge,
+        status: JUDGE_REVIEW,
+    });
 };
 
-// judge
+/* 
+
+JUDGE PROJECT SERVICES
+
+ */
 export const getProjectsForJudge = async (judgeId: string) => {
     return (
         await (await getCollectionData(ScreeningTableName))
             .where("judge.id", "==", judgeId)
-            .select("name", "elevatorPitch", "teamMembers")
+            .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
@@ -50,16 +61,23 @@ export const getProjectsForJudge = async (judgeId: string) => {
     }));
 };
 
-export const addReviewToProject = async (projectId: string, data: any) => {
-    return await updateItem(ScreeningTableName, projectId, data);
+export const addReviewToProject = async (projectId: string, rating: any) => {
+    return await updateItem(ScreeningTableName, projectId, {
+        rating,
+        status: RATING_COMPLETED,
+    });
 };
 
-// employee
+/* 
+
+EMPLOYEE PROJECT SERVICES
+
+ */
 export const getProjectsForEmployee = async (userId: string) => {
     userId;
     return (
         await (await getCollectionData(ScreeningTableName))
-            .select("name", "elevatorPitch", "teamMembers")
+            .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
     ).docs.map((doc) => ({
         id: doc.id,

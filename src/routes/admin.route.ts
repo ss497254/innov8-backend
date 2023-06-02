@@ -9,6 +9,13 @@ const router = express.Router();
 router.route("/admin/me").get(authProvider("admin"), adminController.getAdmin);
 
 router
+    .route("/admin/judge-details")
+    .get(
+        authProvider("admin"),
+        validate(userValidation.findUser, adminController.getJudgeMemberByEmail)
+    );
+
+router
     .route("/admin/login")
     .post(validate(userValidation.userLogin, adminController.adminLogin));
 
