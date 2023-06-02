@@ -16,6 +16,13 @@ router
     );
 
 router
+    .route("/admin/coach-details")
+    .get(
+        authProvider("admin"),
+        validate(userValidation.findUser, adminController.getJudgeMemberByEmail)
+    );
+
+router
     .route("/admin/login")
     .post(validate(userValidation.userLogin, adminController.adminLogin));
 
