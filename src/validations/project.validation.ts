@@ -17,7 +17,7 @@ export const addJudgeToProject = z.object({
 export const addReviewToProject = z.object({
     params: ProjectIdValidation,
     body: z.object({
-        rating: z.number(),
+        overallRating: z.number(),
     }),
 });
 

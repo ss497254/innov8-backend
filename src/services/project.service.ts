@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { JUDGE_REVIEW, RATING_COMPLETED } from "../constants/project-status";
+import {
+    ADMIN_REVIEW,
+    JUDGE_REVIEW,
+    RATING_COMPLETED,
+} from "../constants/project-status";
 import {
     addItem,
     addItemWithId,
@@ -61,10 +65,13 @@ export const getProjectsForJudge = async (judgeId: string) => {
     }));
 };
 
-export const addReviewToProject = async (projectId: string, rating: any) => {
+export const addReviewToProject = async (
+    projectId: string,
+    data: z.infer<typeof projectValidation.addReviewToProject>["body"]
+) => {
     return await updateItem(ScreeningTableName, projectId, {
-        rating,
         status: RATING_COMPLETED,
+        ...data,
     });
 };
 
@@ -111,7 +118,11 @@ export const saveProject = async (
     data: z.infer<typeof projectValidation.saveProject>["body"]["data"]
 ) => {
     if (type === "draft") return await addItem(DraftsTableName, data);
-    else if (type === "submit") return await addItem(ScreeningTableName, data);
+    else if (type === "submit") {
+        //@ts-ignore
+        data.status = ADMIN_REVIEW;
+        return await addItem(ScreeningTableName, data);
+    }
 
     throw new Error("Invalid form type");
 };
@@ -124,6 +135,8 @@ export const updateProject = async (
     if (type === "draft") return await updateItem(DraftsTableName, id, data);
     else if (type === "submit") {
         await deleteItem(DraftsTableName, id);
+        //@ts-ignore
+        data.status = ADMIN_REVIEW;
         return await addItemWithId(ScreeningTableName, id, data);
     }
 
