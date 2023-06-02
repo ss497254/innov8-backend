@@ -7,6 +7,7 @@ import {
     getItemById,
     updateItem,
 } from "../firebase";
+import { UserType } from "../types/UserType";
 import { projectValidation } from "../validations";
 
 const DraftsTableName = "projects-drafts";
@@ -23,23 +24,30 @@ export const getProjectsById = async (projectId: string) => {
 export const getProjectsForAdmin = async () => {
     return (
         await (await getCollectionData(ScreeningTableName))
-            .select("name", "elevatorPitch")
+            .select("name", "elevatorPitch", "teamMembers")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const addJudgeToProject = async (projectId: string, judgeId: string) => {
-    return await updateItem(ScreeningTableName, projectId, { judgeId });
+export const addJudgeToProject = async (
+    projectId: string,
+    judge: z.infer<typeof projectValidation.addJudgeToProject>["body"]["judge"]
+) => {
+    return await updateItem(ScreeningTableName, projectId, { judge });
 };
 
 // judge
 export const getProjectsForJudge = async (judgeId: string) => {
     return (
         await (await getCollectionData(ScreeningTableName))
-            .where("judgeId", "==", judgeId)
-            .select("name", "elevatorPitch")
+            .where("judge.id", "==", judgeId)
+            .select("name", "elevatorPitch", "teamMembers")
             .get()
-    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updateAt: doc.updateTime,
+        ...doc.data(),
+    }));
 };
 
 export const addReviewToProject = async (projectId: string, data: any) => {
@@ -51,18 +59,26 @@ export const getProjectsForEmployee = async (userId: string) => {
     userId;
     return (
         await (await getCollectionData(ScreeningTableName))
-            .select("name", "elevatorPitch")
+            .select("name", "elevatorPitch", "teamMembers")
             .get()
-    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updateAt: doc.updateTime,
+        ...doc.data(),
+    }));
 };
 
 export const getProjectsFromDraft = async (id: string) => {
     return (
         await (await getCollectionData(DraftsTableName))
             .where("leaderId", "==", id)
-            .select("name", "elevatorPitch")
+            .select("name", "elevatorPitch", "teamMembers")
             .get()
-    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updateAt: doc.updateTime,
+        ...doc.data(),
+    }));
 };
 
 export const getProjectsByIdFromDraft = async (projectId: string) => {
