@@ -5,6 +5,7 @@ import admin from "./admin.route";
 import coach from "./coach.route";
 import development from "./development.route";
 import employee from "./employee.route";
+import hypothesis from "./hypothesis.route";
 import judge from "./judge.route";
 import projectAdmin from "./project.admin.route";
 import projectEmployee from "./project.employee.route";
@@ -18,6 +19,7 @@ const API_ROUTES = [
     projectAdmin,
     projectEmployee,
     projectJudge,
+    hypothesis,
 ];
 const DEV_ROUTES = [development];
 
