@@ -5,6 +5,42 @@ import ApiError from "../lib/api-error";
 import { projectService } from "../services";
 import { projectValidation } from "../validations";
 
+export const getProjectsFromValidation = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const data = await projectService.getProjectsFromValidation(
+            req.session.id
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get idea validation projects",
+            e
+        ).parse(res);
+    }
+};
+
+export const getProjectsByIdFromValidation = async (
+    req: z.infer<typeof projectValidation.getProjectsById>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.getProjectsByIdFromValidation(
+            req.params.projectId
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get idea validation project",
+            e
+        ).parse(res);
+    }
+};
+
 export const getProjects = async (req: Request, res: Response) => {
     try {
         const data = await projectService.getProjectsForEmployee(
@@ -43,7 +79,7 @@ export const getProjectsFromDraft = async (req: Request, res: Response) => {
     } catch (e) {
         new ApiError(
             httpStatus.BAD_REQUEST,
-            "unable to get draft project",
+            "unable to get idea generation project",
             e
         ).parse(res);
     }
@@ -61,7 +97,25 @@ export const getProjectsByIdFromDraft = async (
     } catch (e) {
         new ApiError(
             httpStatus.BAD_REQUEST,
-            "unable to get project data",
+            "unable to get idea generation project",
+            e
+        ).parse(res);
+    }
+};
+
+export const addProjectForIdeaValidation = async (
+    req: z.infer<typeof projectValidation.addProjectForIdeaValidation>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.addProjectForIdeaValidation(
+            req.body.projectId
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "your project doesn't qualify",
             e
         ).parse(res);
     }

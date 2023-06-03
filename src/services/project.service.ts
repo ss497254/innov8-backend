@@ -6,6 +6,7 @@ import {
     JUDGE_REVIEW,
     RATING_COMPLETED,
     DRAFT,
+    COACH_ASSIGN,
 } from "../constants/project-status";
 import {
     addItem,
@@ -19,6 +20,7 @@ import { projectValidation } from "../validations";
 
 const IdeaGenerationTableName = "projects-generation";
 const IdeaScreeningTableName = "projects-screening";
+const IdeaValidationTableName = "projects-validation";
 
 export const getProjectsById = async (projectId: string) => {
     const project = await getItemById(IdeaScreeningTableName, projectId);
@@ -37,7 +39,11 @@ export const getProjectsForAdmin = async () => {
         await (await getCollectionData(IdeaScreeningTableName))
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
-    ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
 };
 
 export const addJudgeToProject = async (
@@ -73,7 +79,7 @@ export const getProjectsForJudge = async (judgeId: string) => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime.seconds,
+        updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
     }));
 };
@@ -93,6 +99,21 @@ export const addReviewToProject = async (
 EMPLOYEE PROJECT SERVICES
 
  */
+export const getProjectsFromValidation = async (id: string) => {
+    const user = await employeeService.getEmployee(id);
+
+    return (
+        await (await getCollectionData(IdeaValidationTableName))
+            .select("name", "elevatorPitch", "teamMembers", "status")
+            .where("teamMembers", "array-contains", user)
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
 export const getProjectsForEmployee = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
@@ -103,7 +124,7 @@ export const getProjectsForEmployee = async (id: string) => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime.seconds,
+        updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
     }));
 };
@@ -118,7 +139,7 @@ export const getProjectsFromDraft = async (id: string) => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime.seconds,
+        updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
     }));
 };
@@ -128,6 +149,24 @@ export const getProjectsByIdFromDraft = async (projectId: string) => {
     if (!project) throw new Error("Project not found");
 
     return project;
+};
+
+export const getProjectsByIdFromValidation = async (projectId: string) => {
+    const project = await getItemById(IdeaValidationTableName, projectId);
+    if (!project) throw new Error("Project not found");
+
+    return project;
+};
+
+export const addProjectForIdeaValidation = async (projectId: string) => {
+    const project = await getProjectsById(projectId);
+
+    if (project.overallRating < 4) throw new Error("Project has low rating");
+
+    await deleteItem(IdeaScreeningTableName, projectId);
+
+    project.status = COACH_ASSIGN;
+    return await addItemWithId(IdeaValidationTableName, projectId, project);
 };
 
 export const saveProject = async (

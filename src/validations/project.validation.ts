@@ -25,7 +25,12 @@ export const addReviewToProject = z.object({
     params: ProjectIdValidation,
     body: z.object({
         overallRating: z.number(),
+        rating: z.any(),
     }),
+});
+
+export const addProjectForIdeaValidation = z.object({
+    body: ProjectIdValidation,
 });
 
 export const saveProject = z.object({

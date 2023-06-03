@@ -7,14 +7,14 @@ import { projectValidation } from "../validations";
 const router = express.Router();
 
 router
-    .route("/employee/projects/drafts")
+    .route("/employee/projects/idea-generation")
     .get(
         authProvider("employee"),
         projectEmployeeController.getProjectsFromDraft
     );
 
 router
-    .route("/employee/projects/drafts/:projectId")
+    .route("/employee/projects/idea-generation/:projectId")
     .get(
         authProvider("employee"),
         validate(
@@ -51,5 +51,29 @@ router
         )
     )
     .delete(authProvider("employee"));
+
+router
+    .route("/employee/projects/idea-validation")
+    .get(
+        authProvider("employee"),
+        projectEmployeeController.getProjectsFromValidation
+    )
+    .post(
+        authProvider("employee"),
+        validate(
+            projectValidation.addProjectForIdeaValidation,
+            projectEmployeeController.addProjectForIdeaValidation
+        )
+    );
+
+router
+    .route("/employee/projects/idea-validation/:projectId")
+    .get(
+        authProvider("employee"),
+        validate(
+            projectValidation.getProjectsById,
+            projectEmployeeController.getProjectsByIdFromValidation
+        )
+    );
 
 export default router;
