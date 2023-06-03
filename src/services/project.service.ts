@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { employeeService } from ".";
 import {
     JUDGE_ASSIGN,
     COACH_REVIEW,
     JUDGE_REVIEW,
     RATING_COMPLETED,
+    DRAFT,
 } from "../constants/project-status";
 import {
     addItem,
@@ -71,7 +73,7 @@ export const getProjectsForJudge = async (judgeId: string) => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime,
+        updateAt: doc.updateTime.seconds,
         ...doc.data(),
     }));
 };
@@ -91,28 +93,32 @@ export const addReviewToProject = async (
 EMPLOYEE PROJECT SERVICES
 
  */
-export const getProjectsForEmployee = async (userId: string) => {
-    userId;
+export const getProjectsForEmployee = async (id: string) => {
+    const user = await employeeService.getEmployee(id);
+
     return (
         await (await getCollectionData(ScreeningTableName))
             .select("name", "elevatorPitch", "teamMembers", "status")
+            .where("teamMembers", "array-contains", user)
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime,
+        updateAt: doc.updateTime.seconds,
         ...doc.data(),
     }));
 };
 
 export const getProjectsFromDraft = async (id: string) => {
+    const user = await employeeService.getEmployee(id);
+
     return (
         await (await getCollectionData(DraftsTableName))
-            .where("leaderId", "==", id)
-            .select("name", "elevatorPitch", "teamMembers")
+            .select("name", "elevatorPitch", "teamMembers", "status")
+            .where("teamMembers", "array-contains", user)
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updateAt: doc.updateTime,
+        updateAt: doc.updateTime.seconds,
         ...doc.data(),
     }));
 };
@@ -128,8 +134,11 @@ export const saveProject = async (
     type: z.infer<typeof projectValidation.saveProject>["body"]["type"],
     data: z.infer<typeof projectValidation.saveProject>["body"]["data"]
 ) => {
-    if (type === "draft") return await addItem(DraftsTableName, data);
-    else if (type === "submit") {
+    if (type === "draft") {
+        //@ts-ignore
+        data.status = DRAFT;
+        return await addItem(DraftsTableName, data);
+    } else if (type === "submit") {
         //@ts-ignore
         data.status = JUDGE_ASSIGN;
         return await addItem(ScreeningTableName, data);
@@ -143,8 +152,11 @@ export const updateProject = async (
     id: string,
     data: z.infer<typeof projectValidation.updateProject>["body"]["data"]
 ) => {
-    if (type === "draft") return await updateItem(DraftsTableName, id, data);
-    else if (type === "submit") {
+    if (type === "draft") {
+        //@ts-ignore
+        data.status = DRAFT;
+        return await updateItem(DraftsTableName, id, data);
+    } else if (type === "submit") {
         await deleteItem(DraftsTableName, id);
         //@ts-ignore
         data.status = JUDGE_ASSIGN;

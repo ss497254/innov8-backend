@@ -1,3 +1,4 @@
+export const DRAFT = "draft";
 export const JUDGE_ASSIGN = "judge-assign";
 export const JUDGE_REVIEW = "judge-review";
 export const RATING_COMPLETED = "rating-completed";
