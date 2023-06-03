@@ -17,11 +17,11 @@ import {
 } from "../firebase";
 import { projectValidation } from "../validations";
 
-const DraftsTableName = "projects-drafts";
-const ScreeningTableName = "projects-screening";
+const IdeaGenerationTableName = "projects-generation";
+const IdeaScreeningTableName = "projects-screening";
 
 export const getProjectsById = async (projectId: string) => {
-    const project = await getItemById(ScreeningTableName, projectId);
+    const project = await getItemById(IdeaScreeningTableName, projectId);
     if (!project) throw new Error("Project not found");
 
     return project;
@@ -34,7 +34,7 @@ ADMIN PROJECT SERVICES
  */
 export const getProjectsForAdmin = async () => {
     return (
-        await (await getCollectionData(ScreeningTableName))
+        await (await getCollectionData(IdeaScreeningTableName))
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -44,7 +44,7 @@ export const addJudgeToProject = async (
     projectId: string,
     judge: z.infer<typeof projectValidation.addJudgeToProject>["body"]["judge"]
 ) => {
-    return await updateItem(ScreeningTableName, projectId, {
+    return await updateItem(IdeaScreeningTableName, projectId, {
         judge,
         status: JUDGE_REVIEW,
     });
@@ -54,7 +54,7 @@ export const addCoachToProject = async (
     projectId: string,
     coach: z.infer<typeof projectValidation.addCoachToProject>["body"]["coach"]
 ) => {
-    return await updateItem(ScreeningTableName, projectId, {
+    return await updateItem(IdeaScreeningTableName, projectId, {
         coach,
         status: COACH_REVIEW,
     });
@@ -67,7 +67,7 @@ JUDGE PROJECT SERVICES
  */
 export const getProjectsForJudge = async (judgeId: string) => {
     return (
-        await (await getCollectionData(ScreeningTableName))
+        await (await getCollectionData(IdeaScreeningTableName))
             .where("judge.id", "==", judgeId)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
@@ -82,7 +82,7 @@ export const addReviewToProject = async (
     projectId: string,
     data: z.infer<typeof projectValidation.addReviewToProject>["body"]
 ) => {
-    return await updateItem(ScreeningTableName, projectId, {
+    return await updateItem(IdeaScreeningTableName, projectId, {
         status: RATING_COMPLETED,
         ...data,
     });
@@ -97,7 +97,7 @@ export const getProjectsForEmployee = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await (await getCollectionData(ScreeningTableName))
+        await (await getCollectionData(IdeaScreeningTableName))
             .select("name", "elevatorPitch", "teamMembers", "status")
             .where("teamMembers", "array-contains", user)
             .get()
@@ -112,7 +112,7 @@ export const getProjectsFromDraft = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await (await getCollectionData(DraftsTableName))
+        await (await getCollectionData(IdeaGenerationTableName))
             .select("name", "elevatorPitch", "teamMembers", "status")
             .where("teamMembers", "array-contains", user)
             .get()
@@ -124,7 +124,7 @@ export const getProjectsFromDraft = async (id: string) => {
 };
 
 export const getProjectsByIdFromDraft = async (projectId: string) => {
-    const project = await getItemById(DraftsTableName, projectId);
+    const project = await getItemById(IdeaGenerationTableName, projectId);
     if (!project) throw new Error("Project not found");
 
     return project;
@@ -137,11 +137,11 @@ export const saveProject = async (
     if (type === "draft") {
         //@ts-ignore
         data.status = DRAFT;
-        return await addItem(DraftsTableName, data);
+        return await addItem(IdeaGenerationTableName, data);
     } else if (type === "submit") {
         //@ts-ignore
         data.status = JUDGE_ASSIGN;
-        return await addItem(ScreeningTableName, data);
+        return await addItem(IdeaScreeningTableName, data);
     }
 
     throw new Error("Invalid form type");
@@ -155,12 +155,12 @@ export const updateProject = async (
     if (type === "draft") {
         //@ts-ignore
         data.status = DRAFT;
-        return await updateItem(DraftsTableName, id, data);
+        return await updateItem(IdeaGenerationTableName, id, data);
     } else if (type === "submit") {
-        await deleteItem(DraftsTableName, id);
+        await deleteItem(IdeaGenerationTableName, id);
         //@ts-ignore
         data.status = JUDGE_ASSIGN;
-        return await addItemWithId(ScreeningTableName, id, data);
+        return await addItemWithId(IdeaScreeningTableName, id, data);
     }
 
     throw new Error("Invalid form type");

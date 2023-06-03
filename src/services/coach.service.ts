@@ -4,7 +4,7 @@ import { addItemWithId, getItem, getItemById } from "../firebase";
 import { UserType } from "../types/UserType";
 import { removeKey } from "../utils/lodash";
 
-const TableName = "coachs";
+const TableName = "coaches";
 
 export const getCoach = async (id: string) => {
     const user: any = (await getItem(TableName, "id", "==", id))[0];
