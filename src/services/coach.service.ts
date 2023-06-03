@@ -38,12 +38,13 @@ export const getCoachByEmailAndPassword = async (
     throw new Error("password not match");
 };
 
-export const addCoach = async (user: Omit<UserType, "id">) => {
+export const addCoach = async (user: UserType | any) => {
+    user.id = v4();
     user.role = "coach";
+    user.avatarUrl =
+        "https://api.dicebear.com/6.x/bottts-neutral/svg?radius=50&seed=" +
+        user.id;
     user.password = await bcrypt.hash(user.password, 4);
 
-    return await addItemWithId(TableName, user.email, {
-        id: v4(),
-        ...removeKey("email", user),
-    });
+    return await addItemWithId(TableName, user.email, removeKey("email", user));
 };
