@@ -16,8 +16,8 @@ export const deleteCollection = (collectionName: string) => {
     return firestore.recursiveDelete(firestore.collection(collectionName));
 };
 
-export const getCollectionData = async (collectionName: string) => {
-    return await firestore.collection(collectionName);
+export const getCollectionData = (collectionName: string) => {
+    return firestore.collection(collectionName);
 };
 
 // Item operations

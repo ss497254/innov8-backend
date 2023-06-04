@@ -24,6 +24,30 @@ router
     );
 
 router
+    .route("/employee/projects/idea-validation")
+    .get(
+        authProvider("employee"),
+        projectEmployeeController.getProjectsFromValidation
+    )
+    .post(
+        authProvider("employee"),
+        validate(
+            projectValidation.addProjectForIdeaValidation,
+            projectEmployeeController.addProjectForIdeaValidation
+        )
+    );
+
+router
+    .route("/employee/projects/idea-validation/:projectId")
+    .get(
+        authProvider("employee"),
+        validate(
+            projectValidation.getProjectsById,
+            projectEmployeeController.getProjectsByIdFromValidation
+        )
+    );
+
+router
     .route("/employee/projects")
     .get(authProvider("employee"), projectEmployeeController.getProjects)
     .post(
@@ -51,29 +75,5 @@ router
         )
     )
     .delete(authProvider("employee"));
-
-router
-    .route("/employee/projects/idea-validation")
-    .get(
-        authProvider("employee"),
-        projectEmployeeController.getProjectsFromValidation
-    )
-    .post(
-        authProvider("employee"),
-        validate(
-            projectValidation.addProjectForIdeaValidation,
-            projectEmployeeController.addProjectForIdeaValidation
-        )
-    );
-
-router
-    .route("/employee/projects/idea-validation/:projectId")
-    .get(
-        authProvider("employee"),
-        validate(
-            projectValidation.getProjectsById,
-            projectEmployeeController.getProjectsByIdFromValidation
-        )
-    );
 
 export default router;

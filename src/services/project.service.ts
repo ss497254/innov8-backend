@@ -29,6 +29,25 @@ export const getProjectsById = async (projectId: string) => {
     return project;
 };
 
+export const getProjectsFromValidation = async () => {
+    return (
+        await getCollectionData(IdeaValidationTableName)
+            .select("name", "elevatorPitch", "teamMembers", "status")
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
+export const getProjectsByIdFromValidation = async (projectId: string) => {
+    const project = await getItemById(IdeaValidationTableName, projectId);
+    if (!project) throw new Error("Project not found");
+
+    return project;
+};
+
 /* 
 
 ADMIN PROJECT SERVICES
@@ -60,7 +79,7 @@ export const addCoachToProject = async (
     projectId: string,
     coach: z.infer<typeof projectValidation.addCoachToProject>["body"]["coach"]
 ) => {
-    return await updateItem(IdeaScreeningTableName, projectId, {
+    return await updateItem(IdeaValidationTableName, projectId, {
         coach,
         status: COACH_REVIEW,
     });
@@ -99,7 +118,7 @@ export const addReviewToProject = async (
 EMPLOYEE PROJECT SERVICES
 
  */
-export const getProjectsFromValidation = async (id: string) => {
+export const getProjectsFromValidationForEmployee = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
@@ -146,13 +165,6 @@ export const getProjectsFromDraft = async (id: string) => {
 
 export const getProjectsByIdFromDraft = async (projectId: string) => {
     const project = await getItemById(IdeaGenerationTableName, projectId);
-    if (!project) throw new Error("Project not found");
-
-    return project;
-};
-
-export const getProjectsByIdFromValidation = async (projectId: string) => {
-    const project = await getItemById(IdeaValidationTableName, projectId);
     if (!project) throw new Error("Project not found");
 
     return project;

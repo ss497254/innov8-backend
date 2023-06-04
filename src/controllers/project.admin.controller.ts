@@ -18,6 +18,22 @@ export const getProjects = async (_req: Request, res: Response) => {
     }
 };
 
+export const getProjectsFromValidation = async (
+    _req: Request,
+    res: Response
+) => {
+    try {
+        const data = await projectService.getProjectsFromValidation();
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get validation projects",
+            e
+        ).parse(res);
+    }
+};
+
 export const getProjectsById = async (
     req: z.infer<typeof projectValidation.getProjectsById>,
     res: Response
@@ -29,6 +45,24 @@ export const getProjectsById = async (
         new ApiError(
             httpStatus.BAD_REQUEST,
             "unable to get project data",
+            e
+        ).parse(res);
+    }
+};
+
+export const getProjectsByIdFromValidation = async (
+    req: z.infer<typeof projectValidation.getProjectsById>,
+    res: Response
+) => {
+    try {
+        const data = await projectService.getProjectsByIdFromValidation(
+            req.params.projectId
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get validation project",
             e
         ).parse(res);
     }

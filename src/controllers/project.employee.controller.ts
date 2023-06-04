@@ -10,7 +10,7 @@ export const getProjectsFromValidation = async (
     res: Response
 ) => {
     try {
-        const data = await projectService.getProjectsFromValidation(
+        const data = await projectService.getProjectsFromValidationForEmployee(
             req.session.id
         );
         res.send({ success: true, data });

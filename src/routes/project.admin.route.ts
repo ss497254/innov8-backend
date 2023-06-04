@@ -7,6 +7,33 @@ import { projectValidation } from "../validations";
 const router = express.Router();
 
 router
+    .route("/admin/projects/idea-validation")
+    .get(
+        authProvider("admin"),
+        projectAdminController.getProjectsFromValidation
+    );
+
+router
+    .route("/admin/projects/idea-validation/:projectId")
+    .get(
+        authProvider("admin"),
+        validate(
+            projectValidation.getProjectsById,
+            projectAdminController.getProjectsByIdFromValidation
+        )
+    );
+
+router
+    .route("/admin/projects/idea-validation/:projectId/add-coach")
+    .post(
+        authProvider("admin"),
+        validate(
+            projectValidation.addCoachToProject,
+            projectAdminController.addCoachToProject
+        )
+    );
+
+router
     .route("/admin/projects")
     .get(authProvider("admin"), projectAdminController.getProjects);
 
@@ -27,16 +54,6 @@ router
         validate(
             projectValidation.addJudgeToProject,
             projectAdminController.addJudgeToProject
-        )
-    );
-
-router
-    .route("/admin/projects/:projectId/add-coach")
-    .post(
-        authProvider("admin"),
-        validate(
-            projectValidation.addCoachToProject,
-            projectAdminController.addCoachToProject
         )
     );
 
