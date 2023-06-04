@@ -47,8 +47,8 @@ export const getItem = async (
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const getItemById = async (collectionName: string, docId: string) => {
-    return (await firestore.collection(collectionName).doc(docId).get()).data();
+export const getItemById = (collectionName: string, docId: string) => {
+    return firestore.collection(collectionName).doc(docId).get();
 };
 
 export const addItemWithId = async (

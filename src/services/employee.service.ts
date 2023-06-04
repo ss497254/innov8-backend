@@ -18,7 +18,7 @@ export const getEmployeeByEmail = async (
     email: string,
     withPassword = false
 ): Promise<UserType> => {
-    const user: any = await getItemById(TableName, email);
+    const user: any = (await getItemById(TableName, email)).data();
 
     if (!user) throw new Error("User not found!");
 

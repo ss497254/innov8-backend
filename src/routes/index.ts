@@ -8,6 +8,7 @@ import employee from "./employee.route";
 import hypothesis from "./hypothesis.route";
 import judge from "./judge.route";
 import projectAdmin from "./project.admin.route";
+import projectCoach from "./project.coach.route";
 import projectEmployee from "./project.employee.route";
 import projectJudge from "./project.judge.route";
 
@@ -17,6 +18,7 @@ const API_ROUTES = [
     employee,
     judge,
     projectAdmin,
+    projectCoach,
     projectEmployee,
     projectJudge,
     hypothesis,

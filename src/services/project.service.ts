@@ -24,9 +24,12 @@ const IdeaValidationTableName = "projects-validation";
 
 export const getProjectsById = async (projectId: string) => {
     const project = await getItemById(IdeaScreeningTableName, projectId);
-    if (!project) throw new Error("Project not found");
+    if (!project.id) throw new Error("Project not found");
 
-    return project;
+    return {
+        updatedAt: project.updateTime?.toMillis(),
+        ...(project.data() as any),
+    };
 };
 
 export const getProjectsFromValidation = async () => {
@@ -43,9 +46,12 @@ export const getProjectsFromValidation = async () => {
 
 export const getProjectsByIdFromValidation = async (projectId: string) => {
     const project = await getItemById(IdeaValidationTableName, projectId);
-    if (!project) throw new Error("Project not found");
+    if (!project.id) throw new Error("Project not found");
 
-    return project;
+    return {
+        updatedAt: project.updateTime?.toMillis(),
+        ...(project.data() as any),
+    };
 };
 
 /* 
@@ -108,6 +114,34 @@ export const addReviewToProject = async (
     data: z.infer<typeof projectValidation.addReviewToProject>["body"]
 ) => {
     return await updateItem(IdeaScreeningTableName, projectId, {
+        status: RATING_COMPLETED,
+        ...data,
+    });
+};
+
+/* 
+
+COACH PROJECT SERVICES
+
+ */
+export const getProjectsForCoach = async (coachId: string) => {
+    return (
+        await (await getCollectionData(IdeaValidationTableName))
+            .where("coach.id", "==", coachId)
+            .select("name", "elevatorPitch", "teamMembers", "status")
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
+export const addReviewToProjectCoach = async (
+    projectId: string,
+    data: z.infer<typeof projectValidation.addReviewToProject>["body"]
+) => {
+    return await updateItem(IdeaValidationTableName, projectId, {
         status: RATING_COMPLETED,
         ...data,
     });

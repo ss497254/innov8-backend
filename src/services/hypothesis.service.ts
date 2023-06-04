@@ -6,9 +6,12 @@ const IdeaValidationTableName = "projects-validation";
 
 export const getHypothesisById = async (projectId: string) => {
     const project = await getItemById(IdeaValidationTableName, projectId);
-    if (!project) throw new Error("Hypothesis not found");
+    if (!project.id) throw new Error("Hypothesis not found");
 
-    return project;
+    return {
+        updatedAt: project.updateTime?.toMillis(),
+        ...(project.data() as any),
+    };
 };
 
 export const saveHypothesis = async (
