@@ -1,9 +1,23 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { z } from "zod";
 import httpStatus from "../constants/http-status";
 import ApiError from "../lib/api-error";
 import { hypothesisService } from "../services";
 import { hypothesisValidation } from "../validations";
+
+export const getHypotheses = async (_req: Request, res: Response) => {
+    try {
+        const data = await hypothesisService.getHypotheses();
+
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get hypotheses",
+            e
+        ).parse(res);
+    }
+};
 
 export const getHypothesisById = async (
     req: z.infer<typeof hypothesisValidation.getHypothesisById>,

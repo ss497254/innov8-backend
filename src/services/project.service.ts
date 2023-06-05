@@ -199,9 +199,9 @@ export const getProjectsFromDraft = async (id: string) => {
 
 export const getProjectsByIdFromDraft = async (projectId: string) => {
     const project = await getItemById(IdeaGenerationTableName, projectId);
-    if (!project) throw new Error("Project not found");
+    if (!project.id) throw new Error("Project not found");
 
-    return project;
+    return project.data();
 };
 
 export const addProjectForIdeaValidation = async (projectId: string) => {
