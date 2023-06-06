@@ -6,6 +6,7 @@ import coach from "./coach.route";
 import development from "./development.route";
 import employee from "./employee.route";
 import hypothesis from "./hypothesis.route";
+import interview from "./interview.route";
 import judge from "./judge.route";
 import projectAdmin from "./project.admin.route";
 import projectCoach from "./project.coach.route";
@@ -16,6 +17,7 @@ const API_ROUTES = [
     admin,
     coach,
     employee,
+    interview,
     judge,
     projectAdmin,
     projectCoach,

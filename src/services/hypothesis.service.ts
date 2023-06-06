@@ -18,7 +18,6 @@ export const getProjectsWithHypotheses = async () => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
-        updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
     }));
 };
@@ -45,10 +44,8 @@ export const getHypothesisById = async (projectId: string) => {
 
 export const saveHypothesis = async (
     id: string,
-    hypotheses: z.infer<
-        typeof hypothesisValidation.saveHypothesis
-    >["body"]["hypotheses"]
+    data: z.infer<typeof hypothesisValidation.saveHypothesis>["body"]
 ) => {
     await updateItem(IdeaValidationTableName, id, { hasHypotheses: true });
-    return await addItemWithId(ProjectHypothesesTable, id, { hypotheses });
+    return await addItemWithId(ProjectHypothesesTable, id, data);
 };

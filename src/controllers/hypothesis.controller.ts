@@ -61,7 +61,7 @@ export const saveHypothesis = async (
     try {
         const output = await hypothesisService.saveHypothesis(
             req.params.projectId,
-            req.body.hypotheses
+            req.body
         );
         res.send({ success: true, data: output });
     } catch (e) {
