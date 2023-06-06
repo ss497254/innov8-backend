@@ -34,12 +34,12 @@ export const getHypotheses = async () => {
 };
 
 export const getHypothesisById = async (projectId: string) => {
-    const project = await getItemById(ProjectHypothesesTable, projectId);
-    if (!project.id) throw new Error("Hypothesis not found");
+    const hypotheses = await getItemById(ProjectHypothesesTable, projectId);
+    if (!hypotheses.exists) throw new Error("Hypothesis not found");
 
     return {
-        updatedAt: project.updateTime?.toMillis(),
-        ...(project.data() as any),
+        updatedAt: hypotheses.updateTime?.toMillis(),
+        ...(hypotheses.data() as any),
     };
 };
 

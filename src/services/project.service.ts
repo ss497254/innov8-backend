@@ -25,7 +25,7 @@ const IdeaValidationTableName = "projects-validation";
 
 export const getProjectsById = async (projectId: string) => {
     const project = await getItemById(IdeaScreeningTableName, projectId);
-    if (!project.id) throw new Error("Project not found");
+    if (!project.exists) throw new Error("Project not found");
 
     return {
         updatedAt: project.updateTime?.toMillis(),
@@ -47,7 +47,7 @@ export const getProjectsFromValidation = async () => {
 
 export const getProjectsByIdFromValidation = async (projectId: string) => {
     const project = await getItemById(IdeaValidationTableName, projectId);
-    if (!project.id) throw new Error("Project not found");
+    if (!project.exists) throw new Error("Project not found");
 
     return {
         updatedAt: project.updateTime?.toMillis(),
@@ -99,7 +99,7 @@ JUDGE PROJECT SERVICES
  */
 export const getProjectsForJudge = async (judgeId: string) => {
     return (
-        await (await getCollectionData(IdeaScreeningTableName))
+        await getCollectionData(IdeaScreeningTableName)
             .where("judge.id", "==", judgeId)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
@@ -127,7 +127,7 @@ COACH PROJECT SERVICES
  */
 export const getProjectsForCoach = async (coachId: string) => {
     return (
-        await (await getCollectionData(IdeaValidationTableName))
+        await getCollectionData(IdeaValidationTableName)
             .where("coach.id", "==", coachId)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
@@ -157,7 +157,7 @@ export const getProjectsFromValidationForEmployee = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await (await getCollectionData(IdeaValidationTableName))
+        await getCollectionData(IdeaValidationTableName)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .where("teamMembers", "array-contains", user)
             .get()
@@ -172,7 +172,7 @@ export const getProjectsForEmployee = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await (await getCollectionData(IdeaScreeningTableName))
+        await getCollectionData(IdeaScreeningTableName)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .where("teamMembers", "array-contains", user)
             .get()
@@ -187,7 +187,7 @@ export const getProjectsFromDraft = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await (await getCollectionData(IdeaGenerationTableName))
+        await getCollectionData(IdeaGenerationTableName)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .where("teamMembers", "array-contains", user)
             .get()
@@ -200,7 +200,7 @@ export const getProjectsFromDraft = async (id: string) => {
 
 export const getProjectsByIdFromDraft = async (projectId: string) => {
     const project = await getItemById(IdeaGenerationTableName, projectId);
-    if (!project.id) throw new Error("Project not found");
+    if (!project.exists) throw new Error("Project not found");
 
     return project.data();
 };

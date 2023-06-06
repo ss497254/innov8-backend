@@ -10,16 +10,10 @@ export const saveHypothesis = z.object({
     params: projectIdValidation,
     body: z.object({
         hypotheses: z.array(
-            z
-                .object({
-                    hypothesis: z.string(),
-                    question_1: z.string(),
-                    question_2: z.string(),
-                    question_3: z.string(),
-                    question_4: z.string(),
-                    question_5: z.string(),
-                })
-                .partial()
+            z.object({
+                hypothesis: z.string(),
+                questions: z.array(z.string()),
+            })
         ),
     }),
 });
