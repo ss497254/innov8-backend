@@ -5,6 +5,23 @@ import ApiError from "../lib/api-error";
 import { hypothesisService } from "../services";
 import { hypothesisValidation } from "../validations";
 
+export const getProjectsWithHypotheses = async (
+    _req: Request,
+    res: Response
+) => {
+    try {
+        const data = await hypothesisService.getProjectsWithHypotheses();
+
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get projects with hypotheses",
+            e
+        ).parse(res);
+    }
+};
+
 export const getHypotheses = async (_req: Request, res: Response) => {
     try {
         const data = await hypothesisService.getHypotheses();

@@ -10,6 +10,19 @@ import { hypothesisValidation } from "../validations";
 const ProjectHypothesesTable = "projects-hypotheses";
 const IdeaValidationTableName = "projects-validation";
 
+export const getProjectsWithHypotheses = async () => {
+    return (
+        await getCollectionData(IdeaValidationTableName)
+            .where("hasHypotheses", "==", true)
+            .select("coach", "teamMembers", "name")
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
 export const getHypotheses = async () => {
     return (await getCollectionData(ProjectHypothesesTable).get()).docs.map(
         (doc) => ({

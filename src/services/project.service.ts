@@ -16,6 +16,7 @@ import {
     getItemById,
     updateItem,
 } from "../firebase";
+import { removeKey } from "../utils/lodash";
 import { projectValidation } from "../validations";
 
 const IdeaGenerationTableName = "projects-generation";
@@ -61,7 +62,7 @@ ADMIN PROJECT SERVICES
  */
 export const getProjectsForAdmin = async () => {
     return (
-        await (await getCollectionData(IdeaScreeningTableName))
+        await getCollectionData(IdeaScreeningTableName)
             .select("name", "elevatorPitch", "teamMembers", "status")
             .get()
     ).docs.map((doc) => ({
@@ -212,7 +213,11 @@ export const addProjectForIdeaValidation = async (projectId: string) => {
     await deleteItem(IdeaScreeningTableName, projectId);
 
     project.status = COACH_ASSIGN;
-    return await addItemWithId(IdeaValidationTableName, projectId, project);
+    return await addItemWithId(
+        IdeaValidationTableName,
+        projectId,
+        removeKey("updatedAt", project)
+    );
 };
 
 export const saveProject = async (
