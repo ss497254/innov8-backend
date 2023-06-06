@@ -1,8 +1,14 @@
 import { z } from "zod";
-import { updateItem, getItemById, getCollectionData } from "../firebase";
+import {
+    updateItem,
+    getItemById,
+    getCollectionData,
+    addItemWithId,
+} from "../firebase";
 import { hypothesisValidation } from "../validations";
 
 const ProjectHypothesesTable = "projects-hypotheses";
+const IdeaValidationTableName = "projects-validation";
 
 export const getHypotheses = async () => {
     return (await getCollectionData(ProjectHypothesesTable).get()).docs.map(
@@ -30,5 +36,6 @@ export const saveHypothesis = async (
         typeof hypothesisValidation.saveHypothesis
     >["body"]["hypotheses"]
 ) => {
-    return await updateItem(ProjectHypothesesTable, id, { hypotheses });
+    await updateItem(IdeaValidationTableName, id, { hasHypotheses: true });
+    return await addItemWithId(ProjectHypothesesTable, id, { hypotheses });
 };

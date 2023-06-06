@@ -9,7 +9,6 @@ export const getHypothesisById = z.object({
 export const saveHypothesis = z.object({
     params: projectIdValidation,
     body: z.object({
-        projectName: z.string(),
         hypotheses: z.array(
             z
                 .object({
