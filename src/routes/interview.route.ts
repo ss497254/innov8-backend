@@ -12,22 +12,22 @@ router
 
 router
     .route("/employee/interviews")
-    .get(authProvider("employee"), interviewController.getInterviews);
-
-router
-    .route("/employee/interviews/:projectId")
-    .get(
-        authProvider("employee"),
-        validate(
-            interviewValidation.getInterviewById,
-            interviewController.getInterviewById
-        )
-    )
+    .get(authProvider("employee"), interviewController.getInterviews)
     .post(
         authProvider("employee"),
         validate(
             interviewValidation.saveInterview,
             interviewController.saveInterview
+        )
+    );
+
+router
+    .route("/employee/interviews/:interviewId")
+    .get(
+        authProvider("employee"),
+        validate(
+            interviewValidation.getInterviewById,
+            interviewController.getInterviewById
         )
     )
     .delete(authProvider("employee"));

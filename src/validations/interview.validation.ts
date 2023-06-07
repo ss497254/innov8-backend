@@ -1,15 +1,17 @@
 import { z } from "zod";
 import { UserValidation } from "./user.validation";
 
-const projectIdValidation = z.object({ projectId: z.string() }).strict();
+const interviewValidation = z.object({ interviewId: z.string() }).strict();
 
 export const getInterviewById = z.object({
-    params: projectIdValidation,
+    params: interviewValidation,
 });
 
 export const saveInterview = z.object({
-    params: projectIdValidation,
     body: z.object({
+        interviewTitle: z.string(),
+        projectId: z.string(),
+        name: z.string(),
         hypotheses: z.array(
             z.object({
                 hypothesis: z.string(),

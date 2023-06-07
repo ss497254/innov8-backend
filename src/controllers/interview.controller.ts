@@ -41,7 +41,7 @@ export const getInterviewById = async (
 ) => {
     try {
         const data = await interviewService.getInterviewById(
-            req.params.projectId
+            req.params.interviewId
         );
         res.send({ success: true, data });
     } catch (e) {
@@ -58,10 +58,7 @@ export const saveInterview = async (
     res: Response
 ) => {
     try {
-        const output = await interviewService.saveInterview(
-            req.params.projectId,
-            req.body
-        );
+        const output = await interviewService.saveInterview(req.body);
         res.send({ success: true, data: output });
     } catch (e) {
         new ApiError(

@@ -1,11 +1,6 @@
 import { z } from "zod";
 import { employeeService } from ".";
-import {
-    addItemWithId,
-    addOrUpdateItem,
-    getCollectionData,
-    getItemById,
-} from "../firebase";
+import { addItem, getCollectionData, getItemById } from "../firebase";
 import { interviewValidation } from "../validations";
 
 const ProjectInterviewsTable = "projects-interviews";
@@ -14,6 +9,13 @@ export const getInterviewsForCoach = async (coachId: string) => {
     return (
         await getCollectionData(ProjectInterviewsTable)
             .where("coach.id", "==", coachId)
+            .select(
+                "interviewTitle",
+                "coach",
+                "teamMembers",
+                "name",
+                "projectId"
+            )
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
@@ -28,6 +30,13 @@ export const getInterviews = async (employeeId: string) => {
     return (
         await getCollectionData(ProjectInterviewsTable)
             .where("teamMembers", "array-contains", user)
+            .select(
+                "interviewTitle",
+                "coach",
+                "teamMembers",
+                "name",
+                "projectId"
+            )
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
@@ -36,19 +45,31 @@ export const getInterviews = async (employeeId: string) => {
     }));
 };
 
-export const getInterviewById = async (projectId: string) => {
-    const interview = await getItemById(ProjectInterviewsTable, projectId);
+export const getInterviewById = async (interviewId: string) => {
+    const interview = await getItemById(ProjectInterviewsTable, interviewId);
     if (!interview.exists) throw new Error("Interview not found");
 
     return {
+        id: interview.id,
         updatedAt: interview.updateTime?.toMillis(),
         ...(interview.data() as any),
     };
 };
 
+export const getInterviewByProjectId = async (projectId: string) => {
+    return (
+        await getCollectionData(ProjectInterviewsTable)
+            .where("projectId", "==", projectId)
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
 export const saveInterview = async (
-    id: string,
     data: z.infer<typeof interviewValidation.saveInterview>["body"]
 ) => {
-    return await addOrUpdateItem(ProjectInterviewsTable, id, data);
+    return await addItem(ProjectInterviewsTable, data);
 };

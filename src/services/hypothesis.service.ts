@@ -18,6 +18,7 @@ export const getProjectsWithHypotheses = async () => {
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
     }));
 };
