@@ -5,9 +5,25 @@ import ApiError from "../lib/api-error";
 import { interviewService } from "../services";
 import { interviewValidation } from "../validations";
 
-export const getInterviews = async (_req: Request, res: Response) => {
+export const getInterviewsForCoach = async (req: Request, res: Response) => {
     try {
-        const data = await interviewService.getInterviews();
+        const data = await interviewService.getInterviewsForCoach(
+            req.session.id
+        );
+
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get coach interviews",
+            e
+        ).parse(res);
+    }
+};
+
+export const getInterviews = async (req: Request, res: Response) => {
+    try {
+        const data = await interviewService.getInterviews(req.session.id);
 
         res.send({ success: true, data });
     } catch (e) {

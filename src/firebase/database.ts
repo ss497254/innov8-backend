@@ -71,6 +71,14 @@ export const updateItem = async (
     return await firestore.collection(collectionName).doc(id).update(data);
 };
 
+export const addOrUpdateItem = async (
+    collectionName: string,
+    id: string,
+    data: any
+) => {
+    return await firestore.collection(collectionName).doc(id).set(data);
+};
+
 export const deleteItem = async (collectionName: string, id: string) => {
     return await firestore.collection(collectionName).doc(id).delete();
 };

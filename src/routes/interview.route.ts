@@ -7,11 +7,15 @@ import { interviewValidation } from "../validations";
 const router = express.Router();
 
 router
-    .route("/employee/interview")
+    .route("/coach/interviews")
+    .get(authProvider("coach"), interviewController.getInterviewsForCoach);
+
+router
+    .route("/employee/interviews")
     .get(authProvider("employee"), interviewController.getInterviews);
 
 router
-    .route("/employee/interview/:projectId")
+    .route("/employee/interviews/:projectId")
     .get(
         authProvider("employee"),
         validate(
