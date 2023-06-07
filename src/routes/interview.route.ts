@@ -11,6 +11,16 @@ router
     .get(authProvider("coach"), interviewController.getInterviewsForCoach);
 
 router
+    .route("/coach/interviews/:interviewId")
+    .get(
+        authProvider("coach"),
+        validate(
+            interviewValidation.getInterviewById,
+            interviewController.getInterviewById
+        )
+    );
+
+router
     .route("/employee/interviews")
     .get(authProvider("employee"), interviewController.getInterviews)
     .post(

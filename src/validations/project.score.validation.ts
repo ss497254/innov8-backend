@@ -19,5 +19,6 @@ export const saveProjectScore = z.object({
                 hypothesis: z.array(z.number()),
             })
         ),
+        review: z.string().optional(),
     }),
 });

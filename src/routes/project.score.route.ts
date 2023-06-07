@@ -7,6 +7,23 @@ import { projectScoreValidation } from "../validations";
 const router = express.Router();
 
 router
+    .route("/coach/project-score/:interviewId")
+    .get(
+        authProvider("coach"),
+        validate(
+            projectScoreValidation.getScoreById,
+            projectScoreController.getScoreById
+        )
+    )
+    .post(
+        authProvider("coach"),
+        validate(
+            projectScoreValidation.saveProjectScore,
+            projectScoreController.saveProjectScore
+        )
+    );
+
+router
     .route("/employee/project-score/:interviewId")
     .get(
         authProvider("employee"),

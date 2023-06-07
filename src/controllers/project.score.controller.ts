@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { z } from "zod";
 import httpStatus from "../constants/http-status";
 import ApiError from "../lib/api-error";
@@ -42,7 +42,7 @@ export const getScoreById = async (
 };
 
 export const saveProjectScore = async (
-    req: z.infer<typeof projectScoreValidation.saveProjectScore>,
+    req: Request & z.infer<typeof projectScoreValidation.saveProjectScore>,
     res: Response
 ) => {
     try {
