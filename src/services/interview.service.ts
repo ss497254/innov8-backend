@@ -14,7 +14,8 @@ export const getInterviewsForCoach = async (coachId: string) => {
                 "coach",
                 "teamMembers",
                 "name",
-                "projectId"
+                "projectId",
+                "completed"
             )
             .get()
     ).docs.map((doc) => ({
@@ -35,7 +36,8 @@ export const getInterviews = async (employeeId: string) => {
                 "coach",
                 "teamMembers",
                 "name",
-                "projectId"
+                "projectId",
+                "completed"
             )
             .get()
     ).docs.map((doc) => ({

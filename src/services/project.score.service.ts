@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { addItemWithId, getItemById } from "../firebase";
+import { addItemWithId, getItemById, updateItem } from "../firebase";
 import { projectScoreValidation } from "../validations";
 
 const ProjectScoresTable = "projects-scores";
+const ProjectInterviewsTable = "projects-interviews";
 
 export const getScoreByProjectId = async (projectId: string) => {
     const hypotheses = await getItemById(ProjectScoresTable, projectId);
@@ -28,5 +29,6 @@ export const saveProjectScore = async (
     id: string,
     data: z.infer<typeof projectScoreValidation.saveProjectScore>["body"]
 ) => {
+    await updateItem(ProjectInterviewsTable, id, { completed: true });
     return await addItemWithId(ProjectScoresTable, id, data);
 };
