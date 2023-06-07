@@ -6,3 +6,4 @@ export * as hypothesisService from "./hypothesis.service";
 export * as interviewService from "./interview.service";
 export * as judgeService from "./judge.service";
 export * as projectService from "./project.service";
+export * as projectScoreService from "./project.score.service";

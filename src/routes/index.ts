@@ -12,18 +12,20 @@ import projectAdmin from "./project.admin.route";
 import projectCoach from "./project.coach.route";
 import projectEmployee from "./project.employee.route";
 import projectJudge from "./project.judge.route";
+import projectScore from "./project.score.route";
 
 const API_ROUTES = [
     admin,
     coach,
     employee,
+    hypothesis,
     interview,
     judge,
     projectAdmin,
     projectCoach,
     projectEmployee,
     projectJudge,
-    hypothesis,
+    projectScore,
 ];
 const DEV_ROUTES = [development];
 
