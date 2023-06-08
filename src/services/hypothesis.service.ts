@@ -14,7 +14,7 @@ export const getProjectsWithHypotheses = async () => {
     return (
         await getCollectionData(IdeaValidationTableName)
             .where("hasHypotheses", "==", true)
-            .select("coach", "teamMembers", "name")
+            .select("coach", "teamMembers", "name", "elevatorPitch")
             .get()
     ).docs.map((doc) => ({
         id: doc.id,

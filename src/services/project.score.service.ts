@@ -21,8 +21,7 @@ export const getScoreByProjectId = async (projectId: string) => {
         id: doc.id,
         updatedAt: doc.updateTime.toMillis(),
         ...doc.data(),
-    }))[0];
-    if (!data) throw new Error("Project score not found");
+    }));
 
     return data;
 };
@@ -60,9 +59,16 @@ export const saveProjectScore = async (
         ...data
     }: z.infer<typeof projectScoreValidation.saveProjectScore>["body"]
 ) => {
-    await updateItem(ProjectInterviewsTable, id, {
+    updateItem(ProjectInterviewsTable, id, {
         completed: FieldValue.arrayUnion(data.userId),
     });
+
+    const score = await getItemById(ProjectScoresTable, id);
+    if (score.exists) {
+        return await updateItem(ProjectScoresTable, id, {
+            [role]: FieldValue.arrayUnion(data),
+        });
+    }
 
     return await addItemWithId(ProjectScoresTable, id, {
         projectId,
