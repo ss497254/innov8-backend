@@ -14,6 +14,9 @@ export const getScoreById = z.object({
 export const saveProjectScore = z.object({
     params: interviewValidation,
     body: z.object({
+        role: z.string(),
+        projectId: z.string(),
+        userId: z.string(),
         score: z.array(
             z.object({
                 hypothesis: z.array(z.number()),

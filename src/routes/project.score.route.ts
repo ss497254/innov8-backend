@@ -7,6 +7,16 @@ import { projectScoreValidation } from "../validations";
 const router = express.Router();
 
 router
+    .route("/coach/project-score-all/:projectId")
+    .get(
+        authProvider("coach"),
+        validate(
+            projectScoreValidation.getScoreByProjectId,
+            projectScoreController.getScoreByProjectId
+        )
+    );
+
+router
     .route("/coach/project-score/:interviewId")
     .get(
         authProvider("coach"),
@@ -20,6 +30,16 @@ router
         validate(
             projectScoreValidation.saveProjectScore,
             projectScoreController.saveProjectScore
+        )
+    );
+
+router
+    .route("/employee/project-score-all/:projectId")
+    .get(
+        authProvider("employee"),
+        validate(
+            projectScoreValidation.getScoreByProjectId,
+            projectScoreController.getScoreByProjectId
         )
     );
 

@@ -1,6 +1,7 @@
 import {
     FieldPath,
     getFirestore,
+    Precondition,
     WhereFilterOp,
 } from "firebase-admin/firestore";
 import { FirebaseInstance } from "./setup";

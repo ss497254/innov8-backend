@@ -41,8 +41,27 @@ export const getScoreById = async (
     }
 };
 
+export const getUserScoreById = async (
+    req: Request & z.infer<typeof projectScoreValidation.getScoreById>,
+    res: Response
+) => {
+    try {
+        const data = await projectScoreService.getUserScoreById(
+            req.session,
+            req.params.interviewId
+        );
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get project score data",
+            e
+        ).parse(res);
+    }
+};
+
 export const saveProjectScore = async (
-    req: Request & z.infer<typeof projectScoreValidation.saveProjectScore>,
+    req: z.infer<typeof projectScoreValidation.saveProjectScore>,
     res: Response
 ) => {
     try {
