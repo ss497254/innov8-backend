@@ -18,6 +18,7 @@ export const saveProjectScore = z.object({
         projectId: z.string(),
         interviewTitle: z.string(),
         userId: z.string(),
+        overallRating: z.number(),
         score: z.array(
             z.object({
                 hypothesis: z.array(z.number()),
