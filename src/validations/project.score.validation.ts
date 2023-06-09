@@ -16,6 +16,7 @@ export const saveProjectScore = z.object({
     body: z.object({
         role: z.string(),
         projectId: z.string(),
+        interviewTitle: z.string(),
         userId: z.string(),
         score: z.array(
             z.object({

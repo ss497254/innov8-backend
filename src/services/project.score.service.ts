@@ -16,6 +16,7 @@ export const getScoreByProjectId = async (projectId: string) => {
     const data = (
         await getCollectionData(ProjectScoresTable)
             .where("projectId", "==", projectId)
+            .select("interviewTitle", "employee", "coach")
             .get()
     ).docs.map((doc) => ({
         id: doc.id,
@@ -56,6 +57,7 @@ export const saveProjectScore = async (
     {
         projectId,
         role,
+        interviewTitle,
         ...data
     }: z.infer<typeof projectScoreValidation.saveProjectScore>["body"]
 ) => {
@@ -72,6 +74,7 @@ export const saveProjectScore = async (
 
     return await addItemWithId(ProjectScoresTable, id, {
         projectId,
+        interviewTitle,
         [role]: FieldValue.arrayUnion(data),
     });
 };
