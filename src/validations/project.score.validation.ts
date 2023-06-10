@@ -21,7 +21,8 @@ export const saveProjectScore = z.object({
         overallRating: z.number(),
         score: z.array(
             z.object({
-                hypothesis: z.array(z.number()),
+                hypothesis: z.string(),
+                questions: z.array(z.number()),
             })
         ),
         review: z.string().optional(),
