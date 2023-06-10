@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { employeeService } from ".";
 import {
     updateItem,
     getItemById,
@@ -10,10 +11,13 @@ import { hypothesisValidation } from "../validations";
 const ProjectHypothesesTable = "projects-hypotheses";
 const IdeaValidationTableName = "projects-validation";
 
-export const getProjectsWithHypotheses = async () => {
+export const getProjectsWithHypotheses = async (id: string) => {
+    const user = await employeeService.getEmployee(id);
+
     return (
         await getCollectionData(IdeaValidationTableName)
             .where("hasHypotheses", "==", true)
+            .where("teamMembers", "array-contains", user)
             .select("coach", "teamMembers", "name", "elevatorPitch")
             .get()
     ).docs.map((doc) => ({

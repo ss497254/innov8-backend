@@ -6,11 +6,13 @@ import { hypothesisService } from "../services";
 import { hypothesisValidation } from "../validations";
 
 export const getProjectsWithHypotheses = async (
-    _req: Request,
+    req: Request,
     res: Response
 ) => {
     try {
-        const data = await hypothesisService.getProjectsWithHypotheses();
+        const data = await hypothesisService.getProjectsWithHypotheses(
+            req.session.id
+        );
 
         res.send({ success: true, data });
     } catch (e) {
