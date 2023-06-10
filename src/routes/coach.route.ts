@@ -16,4 +16,8 @@ router
     .route("/coach/register/")
     .post(validate(userValidation.userRegister, coachController.coachRegister));
 
+router
+    .route("/coach/logout")
+    .get(authProvider("coach"), coachController.logout);
+
 export default router;

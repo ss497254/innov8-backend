@@ -16,4 +16,8 @@ router
     .route("/judge/register/")
     .post(validate(userValidation.userRegister, judgeController.judgeRegister));
 
+router
+    .route("/judge/logout")
+    .get(authProvider("judge"), judgeController.logout);
+
 export default router;

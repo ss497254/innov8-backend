@@ -30,4 +30,8 @@ router
     .route("/admin/register/")
     .post(validate(userValidation.userRegister, adminController.adminRegister));
 
+router
+    .route("/admin/logout")
+    .get(authProvider("admin"), adminController.logout);
+
 export default router;

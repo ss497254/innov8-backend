@@ -33,4 +33,8 @@ router
         )
     );
 
+router
+    .route("/employee/logout")
+    .get(authProvider("employee"), employeeController.logout);
+
 export default router;

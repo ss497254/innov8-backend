@@ -3,7 +3,11 @@ import httpStatus from "../constants/http-status";
 import ApiError from "../lib/api-error";
 import { employeeService } from "../services";
 import { z } from "zod";
-import { createAccessToken, sendAccessToken } from "../utils/UseAccessToken";
+import {
+    createAccessToken,
+    removeAccessToken,
+    sendAccessToken,
+} from "../utils/UseAccessToken";
 import { userValidation } from "../validations";
 
 export const employeeLogin = async (
@@ -80,4 +84,10 @@ export const getTeamMemberByEmail = async (
     } catch (e) {
         new ApiError(httpStatus.BAD_REQUEST, "user not found", e).parse(res);
     }
+};
+
+export const logout = (_: Request, res: Response) => {
+    removeAccessToken(res);
+
+    res.json({ success: true, message: "logout successful" });
 };
