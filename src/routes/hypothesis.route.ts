@@ -7,6 +7,13 @@ import { hypothesisValidation } from "../validations";
 const router = express.Router();
 
 router
+    .route("/coach/hypotheses/projects")
+    .get(
+        authProvider("coach"),
+        hypothesisController.getProjectsWithHypothesesForCoach
+    );
+
+router
     .route("/coach/hypotheses/:projectId")
     .get(authProvider("coach"), hypothesisController.getHypothesisById);
 

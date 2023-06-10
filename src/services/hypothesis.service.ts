@@ -27,6 +27,20 @@ export const getProjectsWithHypotheses = async (id: string) => {
     }));
 };
 
+export const getProjectsWithHypothesesForCoach = async (id: string) => {
+    return (
+        await getCollectionData(IdeaValidationTableName)
+            .where("hasHypotheses", "==", true)
+            .where("coach.id", "==", id)
+            .select("coach", "teamMembers", "name", "elevatorPitch")
+            .get()
+    ).docs.map((doc) => ({
+        id: doc.id,
+        updatedAt: doc.updateTime.toMillis(),
+        ...doc.data(),
+    }));
+};
+
 export const getHypotheses = async () => {
     return (await getCollectionData(ProjectHypothesesTable).get()).docs.map(
         (doc) => ({

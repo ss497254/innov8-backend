@@ -24,6 +24,25 @@ export const getProjectsWithHypotheses = async (
     }
 };
 
+export const getProjectsWithHypothesesForCoach = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const data = await hypothesisService.getProjectsWithHypothesesForCoach(
+            req.session.id
+        );
+
+        res.send({ success: true, data });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to get projects with hypotheses",
+            e
+        ).parse(res);
+    }
+};
+
 export const getHypotheses = async (_req: Request, res: Response) => {
     try {
         const data = await hypothesisService.getHypotheses();
