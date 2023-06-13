@@ -29,6 +29,11 @@ router
     );
 
 router
+    .route("/super-admin/project-form")
+    .get(authProvider("super-admin"), superAdminController.getProjectForm)
+    .put(authProvider("super-admin"), superAdminController.updateProjectForm);
+
+router
     .route("/super-admin/logout")
     .get(authProvider("super-admin"), superAdminController.logout);
 

@@ -71,6 +71,32 @@ export const getSuperAdmin = async (req: Request, res: Response) => {
     }
 };
 
+export const getProjectForm = async (_req: Request, res: Response) => {
+    try {
+        const projectForm = await superAdminService.getProjectForm();
+
+        res.json({ success: true, data: projectForm });
+    } catch (e) {
+        new ApiError(httpStatus.BAD_REQUEST, "project form not found", e).parse(
+            res
+        );
+    }
+};
+
+export const updateProjectForm = async (req: Request, res: Response) => {
+    try {
+        const projectForm = await superAdminService.updateProjectForm(req.body);
+
+        res.json({ success: true, data: projectForm });
+    } catch (e) {
+        new ApiError(
+            httpStatus.BAD_REQUEST,
+            "unable to update project form",
+            e
+        ).parse(res);
+    }
+};
+
 export const logout = (_: Request, res: Response) => {
     removeAccessToken(res);
 

@@ -9,3 +9,4 @@ export const ProjectHypothesesTable = "projects-hypotheses";
 export const IdeaValidationTable = "projects-validation";
 export const IdeaGenerationTable = "projects-generation";
 export const IdeaScreeningTable = "projects-screening";
+export const SuperAdminConfigTable = "super-admins-config";

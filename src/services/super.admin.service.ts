@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
-import { SuperAdminsTable } from "../constants/table-names";
-import { addItemWithId, getItem, getItemById } from "../firebase";
+import {
+    SuperAdminConfigTable,
+    SuperAdminsTable,
+} from "../constants/table-names";
+import { addItemWithId, getItem, getItemById, updateItem } from "../firebase";
 import { UserType } from "../types/UserType";
 import { removeKey } from "../utils/lodash";
 
@@ -50,4 +53,12 @@ export const addSuperAdmin = async (user: UserType | any) => {
         user.email,
         removeKey("email", user)
     );
+};
+
+export const getProjectForm = async () => {
+    return await getItemById(SuperAdminConfigTable, "project-form");
+};
+
+export const updateProjectForm = async (data: any) => {
+    return await updateItem(SuperAdminConfigTable, "project-form", data);
 };
