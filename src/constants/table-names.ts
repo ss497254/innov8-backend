@@ -1,0 +1,11 @@
+export const SuperAdminsTable = "super-admins";
+export const AdminsTable = "admins";
+export const CoachesTable = "coaches";
+export const JudgesTable = "judges";
+export const EmployeesTable = "employees";
+export const ProjectScoresTable = "projects-scores";
+export const ProjectInterviewsTable = "projects-interviews";
+export const ProjectHypothesesTable = "projects-hypotheses";
+export const IdeaValidationTable = "projects-validation";
+export const IdeaGenerationTable = "projects-generation";
+export const IdeaScreeningTable = "projects-screening";

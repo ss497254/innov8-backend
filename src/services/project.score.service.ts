@@ -2,17 +2,17 @@ import { request } from "express";
 import { FieldValue } from "firebase-admin/firestore";
 import { z } from "zod";
 import {
+    ProjectInterviewsTable,
+    ProjectScoresTable,
+} from "../constants/table-names";
+import {
     addItemWithId,
     getCollectionData,
     getItemById,
     updateItem,
 } from "../firebase";
-import { removeKey } from "../utils/lodash";
 import pickProperty from "../utils/pickProperty";
 import { projectScoreValidation } from "../validations";
-
-const ProjectScoresTable = "projects-scores";
-const ProjectInterviewsTable = "projects-interviews";
 
 export const getScoreByProjectId = async (projectId: string) => {
     const data = (

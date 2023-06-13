@@ -1,9 +1,8 @@
 import { z } from "zod";
 import { employeeService } from ".";
+import { ProjectInterviewsTable } from "../constants/table-names";
 import { addItem, getCollectionData, getItemById } from "../firebase";
 import { interviewValidation } from "../validations";
-
-const ProjectInterviewsTable = "projects-interviews";
 
 export const getInterviewsForCoach = async (coachId: string) => {
     return (

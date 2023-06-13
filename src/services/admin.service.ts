@@ -1,13 +1,12 @@
 import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
+import { AdminsTable } from "../constants/table-names";
 import { addItemWithId, getItem, getItemById } from "../firebase";
 import { UserType } from "../types/UserType";
 import { removeKey } from "../utils/lodash";
 
-const TableName = "admins";
-
 export const getAdmin = async (id: string) => {
-    const user: any = (await getItem(TableName, "id", "==", id))[0];
+    const user: any = (await getItem(AdminsTable, "id", "==", id))[0];
 
     if (!user) throw new Error("User not found!");
 
@@ -18,7 +17,7 @@ export const getAdminByEmail = async (
     email: string,
     withPassword = false
 ): Promise<UserType> => {
-    const user: any = (await getItemById(TableName, email)).data();
+    const user: any = (await getItemById(AdminsTable, email)).data();
 
     if (!user) throw new Error("User not found!");
 
@@ -46,5 +45,9 @@ export const addAdmin = async (user: UserType | any) => {
         user.id;
     user.password = await bcrypt.hash(user.password, 4);
 
-    return await addItemWithId(TableName, user.email, removeKey("email", user));
+    return await addItemWithId(
+        AdminsTable,
+        user.email,
+        removeKey("email", user)
+    );
 };

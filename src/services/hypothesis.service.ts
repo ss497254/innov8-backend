@@ -1,21 +1,22 @@
 import { z } from "zod";
 import { employeeService } from ".";
 import {
-    updateItem,
-    getItemById,
-    getCollectionData,
+    IdeaValidationTable,
+    ProjectHypothesesTable,
+} from "../constants/table-names";
+import {
     addItemWithId,
+    getCollectionData,
+    getItemById,
+    updateItem,
 } from "../firebase";
 import { hypothesisValidation } from "../validations";
-
-const ProjectHypothesesTable = "projects-hypotheses";
-const IdeaValidationTableName = "projects-validation";
 
 export const getProjectsWithHypotheses = async (id: string) => {
     const user = await employeeService.getEmployee(id);
 
     return (
-        await getCollectionData(IdeaValidationTableName)
+        await getCollectionData(IdeaValidationTable)
             .where("hasHypotheses", "==", true)
             .where("teamMembers", "array-contains", user)
             .select("coach", "teamMembers", "name", "elevatorPitch")
@@ -29,7 +30,7 @@ export const getProjectsWithHypotheses = async (id: string) => {
 
 export const getProjectsWithHypothesesForCoach = async (id: string) => {
     return (
-        await getCollectionData(IdeaValidationTableName)
+        await getCollectionData(IdeaValidationTable)
             .where("hasHypotheses", "==", true)
             .where("coach.id", "==", id)
             .select("coach", "teamMembers", "name", "elevatorPitch")
@@ -65,6 +66,6 @@ export const saveHypothesis = async (
     id: string,
     data: z.infer<typeof hypothesisValidation.saveHypothesis>["body"]
 ) => {
-    await updateItem(IdeaValidationTableName, id, { hasHypotheses: true });
+    await updateItem(IdeaValidationTable, id, { hasHypotheses: true });
     return await addItemWithId(ProjectHypothesesTable, id, data);
 };
