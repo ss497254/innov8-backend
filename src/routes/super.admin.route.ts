@@ -3,6 +3,7 @@ import express from "express";
 import validate from "../middlewares/validate";
 import { userValidation } from "../validations";
 import { authProvider } from "../middlewares/auth";
+import { getEnvConfig } from "../config";
 
 const router = express.Router();
 
@@ -17,7 +18,9 @@ router
     );
 
 router
-    .route("/super-admin/register/")
+    .route(
+        "/super-admin/register/" + getEnvConfig("SUPER_ADMIN_REGISTER_SECRET")
+    )
     .post(
         validate(
             userValidation.userRegister,
