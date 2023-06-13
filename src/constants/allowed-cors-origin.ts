@@ -7,4 +7,5 @@ export const CorsOrigin = [
     "https://employee-innov8.vercel.app",
     "https://judge-innov8.vercel.app",
     "https://coach-innov8.vercel.app",
+    "https://super-admin-innov8.vercel.app",
 ];

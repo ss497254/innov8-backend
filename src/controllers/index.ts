@@ -1,4 +1,5 @@
 export * as adminController from "./admin.controller";
+export * as superAdminController from "./super.admin.controller";
 export * as coachController from "./coach.controller";
 export * as employeeController from "./employee.controller";
 export * as hypothesisController from "./hypothesis.controller";

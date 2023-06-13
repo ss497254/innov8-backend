@@ -13,6 +13,7 @@ import projectCoach from "./project.coach.route";
 import projectEmployee from "./project.employee.route";
 import projectJudge from "./project.judge.route";
 import projectScore from "./project.score.route";
+import superAdmin from "./super.admin.route";
 
 const API_ROUTES = [
     admin,
@@ -26,6 +27,7 @@ const API_ROUTES = [
     projectEmployee,
     projectJudge,
     projectScore,
+    superAdmin,
 ];
 const DEV_ROUTES = [development];
 
