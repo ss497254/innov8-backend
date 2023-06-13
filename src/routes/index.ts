@@ -14,6 +14,7 @@ import projectEmployee from "./project.employee.route";
 import projectJudge from "./project.judge.route";
 import projectScore from "./project.score.route";
 import superAdmin from "./super.admin.route";
+import userManagement from "./user.management.route";
 
 const API_ROUTES = [
     admin,
@@ -28,7 +29,9 @@ const API_ROUTES = [
     projectJudge,
     projectScore,
     superAdmin,
+    userManagement,
 ];
+
 const DEV_ROUTES = [development];
 
 module.exports = (router: Router) => {

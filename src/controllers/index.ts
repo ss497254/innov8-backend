@@ -10,3 +10,4 @@ export * as projectCoachController from "./project.coach.controller";
 export * as projectEmployeeController from "./project.employee.controller";
 export * as projectJudgeController from "./project.judge.controller";
 export * as projectScoreController from "./project.score.controller";
+export * as userManagementController from "./user.management.controller";
