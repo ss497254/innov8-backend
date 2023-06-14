@@ -54,11 +54,3 @@ export const addSuperAdmin = async (user: UserType | any) => {
         removeKey("email", user)
     );
 };
-
-export const getProjectForm = async () => {
-    return (await getItemById(SuperAdminConfigTable, "project-form")).data();
-};
-
-export const updateProjectForm = async (data: any) => {
-    return await updateItem(SuperAdminConfigTable, "project-form", data);
-};

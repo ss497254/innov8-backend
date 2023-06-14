@@ -11,6 +11,7 @@ import judge from "./judge.route";
 import projectAdmin from "./project.admin.route";
 import projectCoach from "./project.coach.route";
 import projectEmployee from "./project.employee.route";
+import projectForm from "./project.form.route";
 import projectJudge from "./project.judge.route";
 import projectScore from "./project.score.route";
 import superAdmin from "./super.admin.route";
@@ -26,6 +27,7 @@ const API_ROUTES = [
     projectAdmin,
     projectCoach,
     projectEmployee,
+    projectForm,
     projectJudge,
     projectScore,
     superAdmin,

@@ -8,3 +8,4 @@ export * as judgeService from "./judge.service";
 export * as projectService from "./project.service";
 export * as projectScoreService from "./project.score.service";
 export * as userManagementService from "./user.management.service";
+export * as projectFormService from "./project.form.service";
