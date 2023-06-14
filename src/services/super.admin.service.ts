@@ -56,7 +56,7 @@ export const addSuperAdmin = async (user: UserType | any) => {
 };
 
 export const getProjectForm = async () => {
-    return await getItemById(SuperAdminConfigTable, "project-form");
+    return (await getItemById(SuperAdminConfigTable, "project-form")).data();
 };
 
 export const updateProjectForm = async (data: any) => {

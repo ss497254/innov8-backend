@@ -68,27 +68,6 @@ const env: Record<(typeof envVariables)[number], envDetails> = {
     },
     COOKIE_SECURE: { type: "boolean", setBy: "default", value: true },
 
-    // GOOGLE_CLIENT_ID: {
-    //     type: "string",
-    //     setBy: "default",
-    //     value: "",
-    // },
-    // GOOGLE_CLIENT_SECRET: {
-    //     type: "string",
-    //     setBy: "default",
-    //     value: "",
-    // },
-    // GOOGLE_WEBSITE_REDIRECT_URL: {
-    //     type: "string",
-    //     setBy: "default",
-    //     value: "",
-    // },
-    // GOOGLE_APP_REDIRECT_URL: {
-    //     type: "string",
-    //     setBy: "default",
-    //     value: "",
-    // },
-
     SUPER_ADMIN_REGISTER_SECRET: {
         type: "string",
         setBy: "default",
